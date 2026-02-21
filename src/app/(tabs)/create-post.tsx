@@ -7,6 +7,16 @@ import { Text, TextInput, View } from "react-native";
 
 const MAX_CHAR_COUNT = 280;
 
+type CurrentUser = {
+  name: string;
+  username: string;
+};
+
+const CURRENT_USER: CurrentUser = {
+  name: "John Developer",
+  username: "john_dev",
+};
+
 const CreatePostTabScreen = () => {
   const [postText, setPostText] = useState("");
   const [isPosting, setIsPosting] = useState(false);
@@ -35,11 +45,11 @@ const CreatePostTabScreen = () => {
       contentClassName="flex-1 px-4 py-6"
     >
       {/* User Info Section */}
-      <View className="flex-row items-center gap-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-        <Avatar name="Your Name" size="md" />
+      <View className="flex-row items-center gap-3 pb-6 ">
+        <Avatar name={CURRENT_USER.name} size="md" />
         <View className="flex-1">
-          <ThemedText type="defaultSemiBold">Your Name</ThemedText>
-          <ThemedText type="small">@username</ThemedText>
+          <ThemedText type="defaultSemiBold">{CURRENT_USER.name}</ThemedText>
+          <ThemedText type="small">@{CURRENT_USER.username}</ThemedText>
         </View>
       </View>
 
