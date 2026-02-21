@@ -75,12 +75,17 @@ const COMMUNITY_MEMBERS: CommunityMember[] = [
 ];
 
 export default function CommunityTabScreen() {
+  const handleRefresh = async () => {
+    // TODO: Fetch community members from API
+  };
+
   return (
     <ScreenLayout
       title="Community"
       subtitle={`${COMMUNITY_MEMBERS.length} members`}
       scrollViewClassName="flex-1"
       contentClassName="px-4 py-6"
+      onRefresh={handleRefresh}
     >
       {/* Member List */}
       {COMMUNITY_MEMBERS.map((member) => (

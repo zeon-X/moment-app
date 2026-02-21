@@ -21,6 +21,10 @@ const CreatePostTabScreen = () => {
   const [postText, setPostText] = useState("");
   const [isPosting, setIsPosting] = useState(false);
 
+  const handleRefresh = async () => {
+    // TODO: Refresh post form data if needed
+  };
+
   const handlePost = async () => {
     if (postText.trim().length === 0) return;
 
@@ -43,6 +47,7 @@ const CreatePostTabScreen = () => {
       title="Create Post"
       scrollViewClassName="flex-1"
       contentClassName="flex-1 px-4 py-6"
+      onRefresh={handleRefresh}
     >
       {/* User Info Section */}
       <View className="flex-row items-center gap-3 pb-6 ">

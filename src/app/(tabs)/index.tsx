@@ -119,6 +119,10 @@ export default function HomeScreen() {
   const [posts, setPosts] = useState<Post[]>(SAMPLE_POSTS);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
+  const handleRefresh = async () => {
+    // TODO: Fetch fresh posts from API
+  };
+
   const filteredPosts = posts.filter((post) =>
     filterText.trim() === ""
       ? true
@@ -164,6 +168,7 @@ export default function HomeScreen() {
       title="Feed"
       scrollViewClassName="flex-1"
       contentClassName="px-4 py-4"
+      onRefresh={handleRefresh}
     >
       {/* Filter Input */}
       <TextInput

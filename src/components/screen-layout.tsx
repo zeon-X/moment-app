@@ -11,6 +11,7 @@ type ScreenLayoutProps = {
   children: ReactNode;
   scrollViewClassName?: string;
   contentClassName?: string;
+  onRefresh?: () => Promise<void> | void;
 };
 
 export function ScreenLayout({
@@ -20,6 +21,7 @@ export function ScreenLayout({
   children,
   scrollViewClassName = "flex-1",
   contentClassName = "px-4 py-4",
+  onRefresh,
 }: ScreenLayoutProps) {
   const hasHeaderRight = !!headerRight;
   const hasSubtitle = !!subtitle;
@@ -43,7 +45,7 @@ export function ScreenLayout({
       </View>
 
       {/* Scrollable Content Area */}
-      <ThemedScrollView className={scrollViewClassName}>
+      <ThemedScrollView className={scrollViewClassName} onRefresh={onRefresh}>
         {/* Subtitle (if exists) */}
         {hasSubtitle && (
           <View className="px-4 py-4 border-b border-gray-100 dark:border-gray-700">

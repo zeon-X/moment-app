@@ -3,6 +3,7 @@ import { ThemedText } from "@/components/themed-text";
 import { Avatar } from "@/components/ui/avatar";
 import { type Comment } from "@/components/ui/comments-list";
 import { PostCard, type Post } from "@/components/ui/post-card";
+import { StatCard } from "@/components/ui/stat-card";
 import React, { useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 
@@ -62,6 +63,10 @@ const ProfileTabScreen = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [userPosts, setUserPosts] = useState<Post[]>(SAMPLE_USER_POSTS);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
+
+  const handleRefresh = async () => {
+    // TODO: Fetch user data from API
+  };
 
   const handleLogout = () => {
     Alert.alert(
@@ -135,60 +140,30 @@ const ProfileTabScreen = () => {
       }
       contentClassName="px-4 py-6"
       scrollViewClassName="flex-1"
+      onRefresh={handleRefresh}
     >
       {/* Avatar */}
       <View className="items-center mb-4">
         <Avatar name={user.name} size="lg" />
       </View>
 
-      {/* Name */}
+      {/* Info */}
       <View className="items-center mb-4">
-        <ThemedText type="defaultSemiBold" className="text-xl">
+        {/* Name */}
+        <ThemedText type="defaultSemiBold" className="text-xl mb-1">
           {user.name}
         </ThemedText>
-      </View>
-
-      {/* Username & Email */}
-      <View className="items-center mb-6 gap-1">
+        {/* Username & Email */}
         <ThemedText type="small" className="text-gray-500">
-          @{user.username}
-        </ThemedText>
-        <ThemedText type="small" className="text-gray-500">
-          {user.email}
+          @{user.username} {user.email && "|"} {user.email}
         </ThemedText>
       </View>
 
       {/* Stats Section */}
       <View className="flex-row gap-3 mb-8">
-        {/* Posts */}
-        <View className="flex-1 items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <ThemedText type="defaultSemiBold" className="text-xl">
-            {user.posts}
-          </ThemedText>
-          <ThemedText type="xs" className="text-gray-500 mt-1">
-            Posts
-          </ThemedText>
-        </View>
-
-        {/* Comments */}
-        <View className="flex-1 items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <ThemedText type="defaultSemiBold" className="text-xl">
-            {user.comments}
-          </ThemedText>
-          <ThemedText type="xs" className="text-gray-500 mt-1">
-            Comments
-          </ThemedText>
-        </View>
-
-        {/* Likes */}
-        <View className="flex-1 items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <ThemedText type="defaultSemiBold" className="text-xl">
-            {user.likes}
-          </ThemedText>
-          <ThemedText type="xs" className="text-gray-500 mt-1">
-            Likes
-          </ThemedText>
-        </View>
+        <StatCard value={user.posts} label="Posts" />
+        <StatCard value={user.comments} label="Comments" />
+        <StatCard value={user.likes} label="Likes" />
       </View>
 
       {/* My Posts Section */}
@@ -208,10 +183,7 @@ const ProfileTabScreen = () => {
             />
           ))
         ) : (
-          <ThemedText
-            type="small"
-            className="text-gray-500 text-center py-4"
-          >
+          <ThemedText type="small" className="text-gray-500 text-center py-4">
             No posts yet
           </ThemedText>
         )}

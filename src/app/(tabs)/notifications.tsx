@@ -71,6 +71,10 @@ const NotificationTabScreen = () => {
   const [notifications, setNotifications] =
     useState<Notification[]>(SAMPLE_NOTIFICATIONS);
 
+  const handleRefresh = async () => {
+    // TODO: Fetch new notifications from API
+  };
+
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const handleNotificationPress = (notificationId: string) => {
@@ -92,6 +96,7 @@ const NotificationTabScreen = () => {
         )
       }
       contentClassName="px-4 py-4 pb-8"
+      onRefresh={handleRefresh}
     >
       {/* Notifications List */}
       {notifications.length > 0 ? (
