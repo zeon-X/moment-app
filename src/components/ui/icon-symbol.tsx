@@ -30,6 +30,8 @@ const MAPPING = {
   "bell.fill": "notifications",
   "bell.badge.fill": "notifications-active",
   "plus.circle.fill": "add-circle",
+  "heart.fill": "favorite",
+  "bubble.right.fill": "chat",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
 } as const satisfies Partial<IconMapping>;

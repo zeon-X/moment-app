@@ -1,6 +1,7 @@
 import { ThemedScrollView } from "@/components/themed-scrollview";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";
@@ -43,9 +44,7 @@ const CreatePostTabScreen = () => {
 
           {/* User Info Section */}
           <View className="flex-row items-center gap-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-            <View className="w-12 h-12 rounded-full bg-orange-500 justify-center items-center">
-              <ThemedText type="defaultSemiBold">U</ThemedText>
-            </View>
+            <Avatar name="Your Name" size="md" />
             <View className="flex-1">
               <ThemedText type="defaultSemiBold">Your Name</ThemedText>
               <ThemedText type="small">@username</ThemedText>
@@ -58,11 +57,11 @@ const CreatePostTabScreen = () => {
               placeholder="What's on your mind?"
               placeholderTextColor="#999"
               multiline
-              numberOfLines={6}
+              numberOfLines={10}
               value={postText}
               onChangeText={setPostText}
               maxLength={MAX_CHAR_COUNT}
-              className="bg-gray-100 dark:bg-gray-800 text-base text-gray-900 dark:text-white p-4 rounded-lg min-h-32"
+              className="bg-gray-100 dark:bg-gray-800 text-base text-gray-900 dark:text-white p-4 rounded-lg min-h-48"
               textAlignVertical="top"
             />
 
