@@ -1,7 +1,5 @@
-import { ThemedScrollView } from "@/components/themed-scrollview";
-import { ThemedText } from "@/components/themed-text";
+import { ScreenLayout } from "@/components/screen-layout";
 import { MemberCard, type CommunityMember } from "@/components/ui/member-card";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const COMMUNITY_MEMBERS: CommunityMember[] = [
   {
@@ -78,24 +76,16 @@ const COMMUNITY_MEMBERS: CommunityMember[] = [
 
 export default function CommunityTabScreen() {
   return (
-    <SafeAreaView
-      edges={{ bottom: "off", top: "additive" }}
-      style={{ flex: 1 }}
+    <ScreenLayout
+      title="Community"
+      subtitle={`${COMMUNITY_MEMBERS.length} members`}
+      scrollViewClassName="flex-1"
+      contentClassName="px-4 py-6"
     >
-      <ThemedScrollView className="flex-1 px-4 py-6">
-        {/* Header */}
-        <ThemedText type="title" className="text-2xl mb-2">
-          Community
-        </ThemedText>
-        <ThemedText className="text-gray-500 mb-6">
-          {COMMUNITY_MEMBERS.length} members
-        </ThemedText>
-
-        {/* Member List */}
-        {COMMUNITY_MEMBERS.map((member) => (
-          <MemberCard key={member.id} member={member} />
-        ))}
-      </ThemedScrollView>
-    </SafeAreaView>
+      {/* Member List */}
+      {COMMUNITY_MEMBERS.map((member) => (
+        <MemberCard key={member.id} member={member} />
+      ))}
+    </ScreenLayout>
   );
 }

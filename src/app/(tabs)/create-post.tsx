@@ -1,11 +1,9 @@
-import { ThemedScrollView } from "@/components/themed-scrollview";
+import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const MAX_CHAR_COUNT = 280;
 
@@ -31,78 +29,70 @@ const CreatePostTabScreen = () => {
   const canPost = postText.trim().length > 0 && !isOverLimit;
 
   return (
-    <SafeAreaView
-      edges={{ bottom: "off", top: "additive" }}
-      style={{ flex: 1 }}
+    <ScreenLayout
+      title="Create Post"
+      scrollViewClassName="flex-1"
+      contentClassName="flex-1 px-4 py-6"
     >
-      <ThemedScrollView className="flex-1">
-        <ThemedView className="flex-1 px-4 py-6">
-          {/* Header */}
-          <ThemedText type="title" className="mb-6">
-            Create Post
-          </ThemedText>
+      {/* User Info Section */}
+      <View className="flex-row items-center gap-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <Avatar name="Your Name" size="md" />
+        <View className="flex-1">
+          <ThemedText type="defaultSemiBold">Your Name</ThemedText>
+          <ThemedText type="small">@username</ThemedText>
+        </View>
+      </View>
 
-          {/* User Info Section */}
-          <View className="flex-row items-center gap-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-            <Avatar name="Your Name" size="md" />
-            <View className="flex-1">
-              <ThemedText type="defaultSemiBold">Your Name</ThemedText>
-              <ThemedText type="small">@username</ThemedText>
-            </View>
-          </View>
+      {/* Text Input */}
+      <View className="mb-6">
+        <TextInput
+          placeholder="What's on your mind?"
+          placeholderTextColor="#999"
+          multiline
+          numberOfLines={10}
+          value={postText}
+          onChangeText={setPostText}
+          maxLength={MAX_CHAR_COUNT}
+          className="bg-gray-100 dark:bg-gray-800 text-base text-gray-900 dark:text-white p-4 rounded-lg min-h-48"
+          textAlignVertical="top"
+        />
 
-          {/* Text Input */}
-          <View className="mb-6">
-            <TextInput
-              placeholder="What's on your mind?"
-              placeholderTextColor="#999"
-              multiline
-              numberOfLines={10}
-              value={postText}
-              onChangeText={setPostText}
-              maxLength={MAX_CHAR_COUNT}
-              className="bg-gray-100 dark:bg-gray-800 text-base text-gray-900 dark:text-white p-4 rounded-lg min-h-48"
-              textAlignVertical="top"
-            />
+        {/* Character Counter */}
+        <View className="flex-row justify-end items-center mt-3">
+          <Text
+            className={`text-sm font-medium ${
+              isOverLimit
+                ? "text-red-500"
+                : isNearLimit
+                  ? "text-orange-500"
+                  : "text-gray-500"
+            }`}
+          >
+            {charCount} / {MAX_CHAR_COUNT}
+          </Text>
+          {isOverLimit && (
+            <Text className="text-xs text-red-500">
+              Character limit exceeded
+            </Text>
+          )}
+        </View>
+      </View>
 
-            {/* Character Counter */}
-            <View className="flex-row justify-end items-center mt-3">
-              <Text
-                className={`text-sm font-medium ${
-                  isOverLimit
-                    ? "text-red-500"
-                    : isNearLimit
-                      ? "text-orange-500"
-                      : "text-gray-500"
-                }`}
-              >
-                {charCount} / {MAX_CHAR_COUNT}
-              </Text>
-              {isOverLimit && (
-                <Text className="text-xs text-red-500">
-                  Character limit exceeded
-                </Text>
-              )}
-            </View>
-          </View>
+      {/* Post Button */}
+      <View className="">
+        <Button
+          title={isPosting ? "Posting..." : "Post"}
+          variant={canPost ? "primary" : "secondary"}
+          onPress={handlePost}
+          disabled={!canPost || isPosting}
+        />
+      </View>
 
-          {/* Post Button */}
-          <View className="">
-            <Button
-              title={isPosting ? "Posting..." : "Post"}
-              variant={canPost ? "primary" : "secondary"}
-              onPress={handlePost}
-              disabled={!canPost || isPosting}
-            />
-          </View>
-
-          {/* Info Text */}
-          <ThemedText type="small" className="text-center text-gray-500 mt-6">
-            Your post will be visible to your community
-          </ThemedText>
-        </ThemedView>
-      </ThemedScrollView>
-    </SafeAreaView>
+      {/* Info Text */}
+      <ThemedText type="small" className="text-center text-gray-500 mt-6">
+        Your post will be visible to your community
+      </ThemedText>
+    </ScreenLayout>
   );
 };
 

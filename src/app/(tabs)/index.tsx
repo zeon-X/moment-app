@@ -1,11 +1,10 @@
-import { ThemedScrollView } from "@/components/themed-scrollview";
+import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { type Comment } from "@/components/ui/comments-list";
 import { PostCard, type Post } from "@/components/ui/post-card";
 import React, { useState } from "react";
 import { TextInput } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const SAMPLE_POSTS: Post[] = [
   {
@@ -161,54 +160,48 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView
-      edges={{ bottom: "off", top: "additive" }}
-      style={{ flex: 1 }}
+    <ScreenLayout
+      title="Feed"
+      scrollViewClassName="flex-1"
+      contentClassName="px-4 py-4"
     >
-      <ThemedScrollView className="flex-1 px-4 py-4">
-        {/* Header */}
-        <ThemedText type="title" className="text-2xl mb-4">
-          Feed
-        </ThemedText>
+      {/* Filter Input */}
+      <TextInput
+        placeholder="Filter by username or name..."
+        placeholderTextColor="#999"
+        value={filterText}
+        onChangeText={setFilterText}
+        className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-4 py-3 rounded-lg mb-6 border border-gray-200 dark:border-gray-700"
+      />
 
-        {/* Filter Input */}
-        <TextInput
-          placeholder="Filter by username or name..."
-          placeholderTextColor="#999"
-          value={filterText}
-          onChangeText={setFilterText}
-          className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-4 py-3 rounded-lg mb-6 border border-gray-200 dark:border-gray-700"
-        />
+      {/* Posts List */}
+      {filteredPosts.length > 0 ? (
+        filteredPosts.map((post) => (
+          <PostCard
+            key={post.id}
+            post={post}
+            isExpanded={expandedPostId === post.id}
+            onLike={handleLike}
+            onToggleComments={handleToggleComments}
+            onAddComment={handleAddComment}
+          />
+        ))
+      ) : (
+        <ThemedView className="flex-1 items-center justify-center py-12">
+          <ThemedText className="text-gray-500 text-center">
+            {`No posts found for "${filterText}"`}
+          </ThemedText>
+        </ThemedView>
+      )}
 
-        {/* Posts List */}
-        {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              isExpanded={expandedPostId === post.id}
-              onLike={handleLike}
-              onToggleComments={handleToggleComments}
-              onAddComment={handleAddComment}
-            />
-          ))
-        ) : (
-          <ThemedView className="flex-1 items-center justify-center py-12">
-            <ThemedText className="text-gray-500 text-center">
-              {`No posts found for "${filterText}"`}
-            </ThemedText>
-          </ThemedView>
-        )}
-
-        {/* Empty State */}
-        {filteredPosts.length === 0 && !filterText && (
-          <ThemedView className="flex-1 items-center justify-center py-12">
-            <ThemedText className="text-gray-500 text-center">
-              No posts yet. Follow users to see their posts!
-            </ThemedText>
-          </ThemedView>
-        )}
-      </ThemedScrollView>
-    </SafeAreaView>
+      {/* Empty State */}
+      {filteredPosts.length === 0 && !filterText && (
+        <ThemedView className="flex-1 items-center justify-center py-12">
+          <ThemedText className="text-gray-500 text-center">
+            No posts yet. Follow users to see their posts!
+          </ThemedText>
+        </ThemedView>
+      )}
+    </ScreenLayout>
   );
 }
