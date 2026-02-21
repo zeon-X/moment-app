@@ -10,6 +10,7 @@ import "react-native-reanimated";
 import "./global.css";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -17,22 +18,21 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
-    <>
+    <SafeAreaProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <StatusBar style="auto" />
-        <Stack>
-          <Stack.Protected guard={isAuthenticated} redirectTo="onboarding">
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Protected guard={isAuthenticated}>
+            <Stack.Screen name="(tabs)" />
           </Stack.Protected>
-          <Stack.Protected guard={!isAuthenticated} redirectTo="(tabs)">
-            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-            <Stack.Screen name="auth" options={{ headerShown: false }} />
+          <Stack.Protected guard={!isAuthenticated}>
+            <Stack.Screen name="(auth)" />
           </Stack.Protected>
         </Stack>
       </ThemeProvider>
-    </>
+    </SafeAreaProvider>
   );
 }

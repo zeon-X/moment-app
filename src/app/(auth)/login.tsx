@@ -13,48 +13,32 @@ import { ThemedView } from "../../components/themed-view";
 import { Button } from "../../components/ui/button";
 import { FormTextInput } from "../../components/ui/form-text-input";
 
-type FormData = {
-  name: string;
-  age: string;
+type LoginFormData = {
   email: string;
-  username: string;
   password: string;
 };
 
-type FormErrors = Partial<Record<keyof FormData, string>>;
+type LoginFormErrors = Partial<Record<keyof LoginFormData, string>>;
 
-const Register = () => {
+const Login = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
+  const [formData, setFormData] = useState<LoginFormData>({
     email: "",
-    username: "",
     password: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<LoginFormErrors>({});
 
-  const handleChange = (field: keyof FormData, value: string) => {
+  const handleChange = (field: keyof LoginFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
-  const registerFormValidate = () => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.name.trim()) newErrors.name = "Name is required.";
-
-    if (!formData.age.trim()) newErrors.age = "Age is required.";
-    else if (!/^\d+$/.test(formData.age.trim()))
-      newErrors.age = "Age must be a number.";
-    else if (Number(formData.age.trim()) <= 0)
-      newErrors.age = "Age must be greater than 0.";
+  const loginFormValidate = () => {
+    const newErrors: LoginFormErrors = {};
 
     if (!formData.email.trim()) newErrors.email = "Email is required.";
     else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email.trim()))
       newErrors.email = "Invalid email address.";
-
-    if (!formData.username.trim()) newErrors.username = "Username is required.";
 
     if (!formData.password.trim()) newErrors.password = "Password is required.";
 
@@ -62,10 +46,10 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRegister = () => {
+  const handleLogin = () => {
     Keyboard.dismiss();
-    if (!registerFormValidate()) return;
-    // Registration logic here
+    if (!loginFormValidate()) return;
+    // Login logic here
   };
 
   return (
@@ -80,25 +64,10 @@ const Register = () => {
           resizeMode="contain"
         />
         <ThemedText type="title" style={{ marginBottom: 16 }}>
-          Create Account
+          Welcome Back
         </ThemedText>
+
         <View className="w-full max-w-md gap-4">
-          <FormTextInput
-            label="Name"
-            placeholder="Name"
-            value={formData.name}
-            onChangeText={(v) => handleChange("name", v)}
-            autoCapitalize="words"
-            error={errors.name}
-          />
-          <FormTextInput
-            label="Age"
-            placeholder="Age"
-            value={formData.age}
-            onChangeText={(v) => handleChange("age", v)}
-            keyboardType="numeric"
-            error={errors.age}
-          />
           <FormTextInput
             label="Email"
             placeholder="Email"
@@ -108,14 +77,7 @@ const Register = () => {
             keyboardType="email-address"
             error={errors.email}
           />
-          <FormTextInput
-            label="Username"
-            placeholder="Username"
-            value={formData.username}
-            onChangeText={(v) => handleChange("username", v)}
-            autoCapitalize="none"
-            error={errors.username}
-          />
+
           <FormTextInput
             label="Password"
             placeholder="Password"
@@ -126,18 +88,19 @@ const Register = () => {
           />
 
           <Button
-            title="Register"
+            title="Login"
             variant="primary"
             className="mt-2 rounded-md py-3"
-            onPress={handleRegister}
+            onPress={handleLogin}
           />
+
           <View className="flex-row justify-center items-center gap-1 mt-1">
             <ThemedText className="text-[12px]">
-              Already have an account?
+              Don’t have an account?
             </ThemedText>
-            <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
+            <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
               <ThemedText className="text-[12px] font-semibold text-orange-600">
-                Go Login
+                Register
               </ThemedText>
             </TouchableOpacity>
           </View>
@@ -147,4 +110,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -19,12 +19,10 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "softwareKeyboardLayoutMode": "pan"
     },
-    // "web": {
-    //   "output": "static",
-    //   "favicon": "./assets/images/favicon.png"
-    // },
+   
      "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
@@ -37,9 +35,9 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#F8F9FA",
+          "backgroundColor": "#ffffff",
           "dark": {
-            "backgroundColor": "#121212"
+            "backgroundColor": "#151718"
           }
         }
       ]
