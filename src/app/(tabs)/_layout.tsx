@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import React from "react";
 
 import { HapticTab } from "@/components/haptic-tab";
@@ -8,6 +8,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -27,12 +28,32 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="notifications"
+        name="friends"
         options={{
-          title: "Notifications",
+          title: "Friends",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="bell.fill" color={color} count={10} />
+            <IconSymbol size={28} name="person.2.fill" color={color} />
           ),
+        }}
+      />
+      {/* Center Create Post Button (opens modal, not a tab screen) */}
+      <Tabs.Screen
+        name="create-post"
+        options={{
+          title: "Create",
+          // href: null,
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="plus.circle.fill" color={color} />
+          ),
+          // tabBarButton: (props) => (
+          //   <PlatformPressable
+          //     {...props}
+          //     style={[props.style, { marginTop: -12 }]}
+          //     onPress={() => {
+          //       router.push("/create-post-modal");
+          //     }}
+          //   />
+          // ),
         }}
       />
       <Tabs.Screen
@@ -40,7 +61,12 @@ export default function TabLayout() {
         options={{
           title: "Notifications",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="bell.fill" color={color} count={10} />
+            <IconSymbol
+              size={28}
+              name="bell.badge.fill"
+              color={color}
+              count={10}
+            />
           ),
         }}
       />

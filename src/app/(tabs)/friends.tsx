@@ -1,8 +1,7 @@
 import { ThemedScrollView } from "@/components/themed-scrollview";
-import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const NotificationTabScreen = () => {
+export default function FriendTabScreen() {
   return (
     <SafeAreaView
       edges={{ bottom: "off", top: "additive" }}
@@ -11,6 +10,4 @@ const NotificationTabScreen = () => {
       <ThemedScrollView className="flex-1"></ThemedScrollView>
     </SafeAreaView>
   );
-};
-
-export default NotificationTabScreen;
+}

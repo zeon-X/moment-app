@@ -2,7 +2,7 @@ import { ThemedScrollView } from "@/components/themed-scrollview";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const NotificationTabScreen = () => {
+const CreatePostTabScreen = () => {
   return (
     <SafeAreaView
       edges={{ bottom: "off", top: "additive" }}
@@ -13,4 +13,4 @@ const NotificationTabScreen = () => {
   );
 };
 
-export default NotificationTabScreen;
+export default CreatePostTabScreen;

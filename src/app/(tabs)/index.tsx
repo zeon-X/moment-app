@@ -1,7 +1,15 @@
-import { ThemedView } from "@/components/themed-view";
+import { ThemedScrollView } from "@/components/themed-scrollview";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  return <ThemedView className="flex-1 "></ThemedView>;
+  return (
+    <SafeAreaView
+      edges={{ bottom: "off", top: "additive" }}
+      style={{ flex: 1 }}
+    >
+      <ThemedScrollView className="flex-1"></ThemedScrollView>
+    </SafeAreaView>
+  );
 }
 
 // const example = () => {

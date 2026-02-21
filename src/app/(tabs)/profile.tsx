@@ -1,9 +1,17 @@
-import { ThemedView } from "@/components/themed-view";
+import { ThemedScrollView } from "@/components/themed-scrollview";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const TabTwoScreen = () => {
-  return <ThemedView className="flex-1 "></ThemedView>;
+const ProfileTabScreen = () => {
+  return (
+    <SafeAreaView
+      edges={{ bottom: "off", top: "additive" }}
+      style={{ flex: 1 }}
+    >
+      <ThemedScrollView className="flex-1"></ThemedScrollView>
+    </SafeAreaView>
+  );
 };
-export default TabTwoScreen;
+export default ProfileTabScreen;
 
 // export default function TabTwoScreen() {
 //   return (
