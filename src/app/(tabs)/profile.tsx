@@ -12,21 +12,13 @@ type UserProfile = {
   age: number;
   email: string;
   username: string;
-  posts: number;
-  comments: number;
-  likes: number;
+  stats: {
+    posts: number;
+    comments: number;
+    likes: number;
+  };
+  posts: Post[];
 };
-
-const SAMPLE_USER: UserProfile = {
-  name: "John Developer",
-  age: 27,
-  email: "john.dev@example.com",
-  username: "john_dev",
-  posts: 48,
-  comments: 156,
-  likes: 892,
-};
-
 const SAMPLE_USER_POSTS: Post[] = [
   {
     id: "p1",
@@ -58,10 +50,18 @@ const SAMPLE_USER_POSTS: Post[] = [
   },
 ];
 
+const SAMPLE_USER: UserProfile = {
+  name: "John Developer",
+  age: 27,
+  email: "john.dev@example.com",
+  username: "john_dev",
+  stats: { posts: 48, comments: 156, likes: 892 },
+  posts: SAMPLE_USER_POSTS,
+};
+
 const ProfileTabScreen = () => {
-  const [user] = useState<UserProfile>(SAMPLE_USER);
+  const [user, setUser] = useState<UserProfile>(SAMPLE_USER);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [userPosts, setUserPosts] = useState<Post[]>(SAMPLE_USER_POSTS);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
   const handleRefresh = async () => {
@@ -97,8 +97,15 @@ const ProfileTabScreen = () => {
   };
 
   const handleLike = (postId: string) => {
-    setUserPosts((prev) =>
-      prev.map((post) =>
+    setUser((prev) => ({
+      ...prev,
+      stats: {
+        ...prev.stats,
+        likes:
+          prev.stats.likes +
+          (user.posts.find((p) => p.id === postId)?.liked ? -1 : 1),
+      },
+      posts: prev.posts.map((post) =>
         post.id === postId
           ? {
               ...post,
@@ -107,7 +114,7 @@ const ProfileTabScreen = () => {
             }
           : post,
       ),
-    );
+    }));
   };
 
   const handleToggleComments = (postId: string) => {
@@ -115,13 +122,18 @@ const ProfileTabScreen = () => {
   };
 
   const handleAddComment = (postId: string, comment: Comment) => {
-    setUserPosts((prev) =>
-      prev.map((post) =>
+    setUser((prev) => ({
+      ...prev,
+      stats: {
+        ...prev.stats,
+        comments: prev.stats.comments + 1,
+      },
+      posts: prev.posts.map((post) =>
         post.id === postId
           ? { ...post, comments: [...post.comments, comment] }
           : post,
       ),
-    );
+    }));
   };
 
   return (
@@ -161,9 +173,9 @@ const ProfileTabScreen = () => {
 
       {/* Stats Section */}
       <View className="flex-row gap-3 mb-8">
-        <StatCard value={user.posts} label="Posts" />
-        <StatCard value={user.comments} label="Comments" />
-        <StatCard value={user.likes} label="Likes" />
+        <StatCard value={user.stats.posts} label="Posts" />
+        <StatCard value={user.stats.comments} label="Comments" />
+        <StatCard value={user.stats.likes} label="Likes" />
       </View>
 
       {/* My Posts Section */}
@@ -171,8 +183,8 @@ const ProfileTabScreen = () => {
         <ThemedText type="defaultSemiBold" className="text-lg mb-4">
           My Posts
         </ThemedText>
-        {userPosts.length > 0 ? (
-          userPosts.map((post) => (
+        {user.posts.length > 0 ? (
+          user.posts.map((post) => (
             <PostCard
               key={post.id}
               post={post}
