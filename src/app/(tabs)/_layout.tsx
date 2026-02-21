@@ -41,19 +41,9 @@ export default function TabLayout() {
         name="create-post"
         options={{
           title: "Create",
-          // href: null,
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="plus.circle.fill" color={color} />
           ),
-          // tabBarButton: (props) => (
-          //   <PlatformPressable
-          //     {...props}
-          //     style={[props.style, { marginTop: -12 }]}
-          //     onPress={() => {
-          //       router.push("/create-post-modal");
-          //     }}
-          //   />
-          // ),
         }}
       />
       <Tabs.Screen
@@ -61,12 +51,7 @@ export default function TabLayout() {
         options={{
           title: "Notifications",
           tabBarIcon: ({ color }) => (
-            <IconSymbol
-              size={28}
-              name="bell.badge.fill"
-              color={color}
-              count={10}
-            />
+            <IconSymbol size={28} name="bell.fill" color={color} count={10} />
           ),
         }}
       />

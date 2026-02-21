@@ -28,7 +28,7 @@ const MAPPING = {
   "person.fill": "person",
   "person.2.fill": "people",
   "bell.fill": "notifications",
-  "bell.badge.fill": "notifications",
+  "bell.badge.fill": "notifications-active",
   "plus.circle.fill": "add-circle",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
