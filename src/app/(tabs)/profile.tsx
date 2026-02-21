@@ -19,36 +19,6 @@ type UserProfile = {
   };
   posts: Post[];
 };
-const SAMPLE_USER_POSTS: Post[] = [
-  {
-    id: "p1",
-    author: "John Developer",
-    username: "john_dev",
-    content: "Just built an amazing feature using React Native! 🚀",
-    createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
-    likes: 45,
-    comments: [
-      {
-        id: "c1",
-        author: "Sarah Johnson",
-        username: "sarah_j",
-        content: "That looks awesome!",
-        createdAt: new Date(Date.now() - 30 * 60 * 1000),
-      },
-    ],
-    liked: true,
-  },
-  {
-    id: "p2",
-    author: "John Developer",
-    username: "john_dev",
-    content: "Coffee and coding - my favorite combination ☕💻",
-    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
-    likes: 32,
-    comments: [],
-    liked: false,
-  },
-];
 
 const SAMPLE_USER: UserProfile = {
   name: "John Developer",
@@ -56,7 +26,36 @@ const SAMPLE_USER: UserProfile = {
   email: "john.dev@example.com",
   username: "john_dev",
   stats: { posts: 48, comments: 156, likes: 892 },
-  posts: SAMPLE_USER_POSTS,
+  posts: [
+    {
+      id: "p1",
+      author: "John Developer",
+      username: "john_dev",
+      content: "Just built an amazing feature using React Native! 🚀",
+      createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
+      likes: 45,
+      comments: [
+        {
+          id: "c1",
+          author: "Sarah Johnson",
+          username: "sarah_j",
+          content: "That looks awesome!",
+          createdAt: new Date(Date.now() - 30 * 60 * 1000),
+        },
+      ],
+      liked: true,
+    },
+    {
+      id: "p2",
+      author: "John Developer",
+      username: "john_dev",
+      content: "Coffee and coding - my favorite combination ☕💻",
+      createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
+      likes: 32,
+      comments: [],
+      liked: false,
+    },
+  ],
 };
 
 const ProfileTabScreen = () => {
