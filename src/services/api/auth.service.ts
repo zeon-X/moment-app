@@ -8,9 +8,9 @@ export const checkUsernameAvailability = async (username: string) => {
 
 export const loginUser = async (body: any) => {
   return await apiRequest('/auth/login', 'POST',
-    JSON.stringify(body),
+    body,
   )
 }
 export const signUpUser = async (body: any) => {
-  return await apiRequest('/auth/signup', 'POST', JSON.stringify(body))
+  return await apiRequest('/auth/signup', 'POST', body)
 }

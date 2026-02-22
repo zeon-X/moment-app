@@ -3,6 +3,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -21,7 +22,7 @@ const Register = () => {
     isUsernameChecking,
     errors,
     handleChange,
-
+    isRegistering,
     handleRegister,
   } = useRegister();
 
@@ -93,7 +94,15 @@ const Register = () => {
             variant="primary"
             className="mt-2 rounded-md py-3"
             onPress={handleRegister}
+            isLoading={isRegistering}
+            loadingText="Registering..."
           />
+
+          {errors.message && (
+            <Text className="text-red-500 text-center mb-2 font-medium">
+              {errors.message}
+            </Text>
+          )}
 
           <View className="flex-row justify-center items-center gap-1 mt-1">
             <ThemedText type="small">Already have an account?</ThemedText>

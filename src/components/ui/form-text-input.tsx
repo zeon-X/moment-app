@@ -45,7 +45,6 @@ export function FormTextInput({
             isPasswordField ? !showPassword : props.secureTextEntry
           }
           className={`bg-gray-100 dark:bg-gray-800 rounded-md px-4 py-4 ${className}`.trim()}
-          editable={!isLoading}
         />
 
         {isLoading && (

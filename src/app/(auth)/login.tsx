@@ -3,6 +3,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -33,13 +34,13 @@ const Login = () => {
 
         <View className="w-full max-w-md gap-4">
           <FormTextInput
-            label="Email"
-            placeholder="Email"
-            value={formData.email}
-            onChangeText={(v) => handleChange("email", v)}
+            label="Email or Username"
+            placeholder="Email or Username"
+            value={formData.identifier}
+            onChangeText={(v) => handleChange("identifier", v)}
             autoCapitalize="none"
             keyboardType="email-address"
-            error={errors.email}
+            error={errors.identifier}
           />
 
           <FormTextInput
@@ -57,6 +58,12 @@ const Login = () => {
             className="mt-2 rounded-md py-3"
             onPress={handleLogin}
           />
+
+          {errors.message && (
+            <Text className="text-red-500 text-center mb-2 font-medium">
+              {errors.message}
+            </Text>
+          )}
 
           <View className="flex-row justify-center items-center gap-1 mt-1">
             <ThemedText type="small">Don’t have an account?</ThemedText>

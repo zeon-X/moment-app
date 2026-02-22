@@ -5,14 +5,16 @@ export type RegisterFormData = {
     email: string;
     username: string;
     password: string;
+    message?: string;
 };
 
 export type RegisterFormErrors = Partial<Record<keyof RegisterFormData, string>>;
 
 // Login form types
 export type LoginFormData = {
-    email: string;
+    identifier: string;
     password: string;
+    message?: string;
 };
 
 export type LoginFormErrors = Partial<Record<keyof LoginFormData, string>>;

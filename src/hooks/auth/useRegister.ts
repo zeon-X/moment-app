@@ -14,6 +14,8 @@ export const useRegister = () => {
     const [isUsernameAvailable, setIsUsernameAvailable] = useState<
         boolean | null
     >(null);
+
+    const [isRegistering, setIsRegistering] = useState(false);
     const [formData, setFormData] = useState<RegisterFormData>({
         name: "",
         age: "",
@@ -61,9 +63,17 @@ export const useRegister = () => {
                     ...prev,
                     username: data.available
                         ? undefined
-                        : "Username is not available. Please try another.",
+                        : data.message,
                 }));
                 setIsUsernameAvailable((prev) => data.available || null);
+            }
+            else {
+                setIsUsernameAvailable((prev) => null);
+                setErrors((prev) => ({
+                    ...prev,
+                    username: data.message,
+
+                }));
             }
         }, 500);
 
@@ -75,7 +85,20 @@ export const useRegister = () => {
     const handleRegister = async () => {
         Keyboard.dismiss();
         if (!registerFormValidate()) return;
-        const data = await signUpUser(formData);
+        setIsRegistering(true);
+        const data = await signUpUser({ ...formData, age: parseInt(formData.age) });
+        setIsRegistering(false);
+
+        if (data.success) {
+            router.push("/(auth)/login");
+        }
+        else {
+            setErrors((prev) => ({
+                ...prev,
+                message: data.message,
+            }));
+        }
+
         console.log(data);
 
     };
@@ -87,7 +110,7 @@ export const useRegister = () => {
         isUsernameChecking,
         errors,
         handleChange,
-
+        isRegistering,
         handleRegister,
     };
 };

@@ -29,9 +29,9 @@ export const apiRequest = async (
   // console.log("data from apires", data);
 
 
-  if (!data.success) {
-    throw new Error(data.message || 'Something went wrong')
-  }
+  // if (!data.success) {
+  //   throw new Error(data.message || 'Something went wrong')
+  // }
 
   return data
 }

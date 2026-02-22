@@ -9,8 +9,9 @@ export const useLogin = () => {
 
 
     const router = useRouter();
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [formData, setFormData] = useState<LoginFormData>({
-        email: "",
+        identifier: "",
         password: "",
     });
     const [errors, setErrors] = useState<LoginFormErrors>({});
@@ -30,10 +31,11 @@ export const useLogin = () => {
         Keyboard.dismiss();
         if (!loginFormValidate()) return;
         // Login logic here
-
+        setIsLoggingIn(true);
         const data = await loginUser(formData)
+        setIsLoggingIn(false);
     };
 
 
-    return { router, formData, errors, handleChange, handleLogin }
+    return { router, formData, errors, handleChange, isLoggingIn, handleLogin }
 }

@@ -8,6 +8,9 @@ type ButtonProps = TouchableOpacityProps & {
   variant?: ButtonVariant;
   className?: string;
   textClassName?: string;
+  isLoading?: boolean;
+  loadingText?: string;
+  disabled?: boolean;
 };
 
 const variantStyles: Record<
@@ -34,6 +37,8 @@ export function Button({
   className = "",
   textClassName = "",
   disabled,
+  isLoading,
+  loadingText,
   ...props
 }: ButtonProps) {
   const styles = variantStyles[variant];
@@ -41,14 +46,14 @@ export function Button({
   return (
     <TouchableOpacity
       {...props}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       activeOpacity={0.85}
       className={`${styles.container} w-full py-4 rounded-xl ${disabled ? "opacity-60" : ""} ${className}`.trim()}
     >
       <Text
         className={`${styles.text} text-center text-lg font-semibold tracking-wide ${textClassName}`.trim()}
       >
-        {title}
+        {isLoading ? loadingText || title : title}
       </Text>
     </TouchableOpacity>
   );
