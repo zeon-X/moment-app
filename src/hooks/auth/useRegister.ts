@@ -1,7 +1,7 @@
 import {
     checkUsernameAvailability,
     signUpUser,
-} from "@/services/api/auth.service";
+} from "@/services/modules/auth.service";
 import type { RegisterFormData, RegisterFormErrors } from "@/types/auth";
 import { validateRegisterForm } from "@/utils/validation/auth-validation";
 import { useRouter } from "expo-router";

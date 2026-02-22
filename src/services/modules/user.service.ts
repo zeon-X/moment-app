@@ -1,4 +1,4 @@
-import { apiRequest } from "./apiRequest"
+import { apiRequest } from "../api/apiRequest"
 
 export const getUserDetails = async (username: string) => {
     return await apiRequest(`/users/${username}`, 'GET')

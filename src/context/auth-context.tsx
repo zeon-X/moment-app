@@ -1,4 +1,4 @@
-import { getMe } from "@/services/api/auth.service";
+import { getMe } from "@/services/modules/auth.service";
 import { UserInfo } from "@/types/user";
 import { getFromSecureStore } from "@/utils/useSecureStorage";
 import React, {

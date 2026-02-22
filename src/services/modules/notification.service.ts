@@ -1,4 +1,4 @@
-import { apiRequest } from "./apiRequest"
+import { apiRequest } from "../api/apiRequest"
 
 export const getUserNotifications = async () => {
     return await apiRequest('/notifications', 'GET')

@@ -1,4 +1,4 @@
-import { apiRequest } from "./apiRequest"
+import { apiRequest } from "../api/apiRequest"
 
 export const getFeed = async () => {
     return await apiRequest('/posts', 'GET')

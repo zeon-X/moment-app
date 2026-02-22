@@ -1,7 +1,7 @@
 import { ScreenLayout } from "@/components/screen-layout";
 import LoadingText from "@/components/ui/loading-text";
 import { MemberCard } from "@/components/ui/member-card";
-import { getCommunityMembers } from "@/services/api/user.service";
+import { getCommunityMembers } from "@/services/modules/user.service";
 import { useEffect, useState } from "react";
 import type { CommunityMember } from "../../types/community";
 

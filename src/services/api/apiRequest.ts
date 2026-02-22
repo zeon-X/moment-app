@@ -1,5 +1,6 @@
 import config from '@/config';
 import { getFromSecureStore } from '@/utils/useSecureStorage';
+import { logoutUser } from '../modules/auth.service';
 
 const API_URL = config.apiUrl
 
@@ -27,8 +28,12 @@ export const apiRequest = async (
 
   const data = await response.json()
 
-  // console.log("data from apires", data);
+  console.log("data from ApiRequest:", JSON.stringify(response, null, 1));
+  console.log("response status", response.status === 500);
 
+  if (response.status === 500) {
+    logoutUser();
+  }
 
   // if (!data.success) {
   //   throw new Error(data.message || 'Something went wrong')

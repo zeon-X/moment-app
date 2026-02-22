@@ -1,6 +1,6 @@
 // services/api/auth.service.ts
-import { deleteFromSecureStore } from '@/utils/useSecureStorage'
-import { apiRequest } from './apiRequest'
+import { deleteFromSecureStore } from '@/utils/useSecureStorage';
+import { apiRequest } from '../api/apiRequest';
 
 
 export const checkUsernameAvailability = async (username: string) => {
@@ -26,9 +26,6 @@ export const getMe = async () => {
 
 
 export const logoutUser = async () => {
-
-
   deleteFromSecureStore("token")
   deleteFromSecureStore("user")
-
 }

@@ -5,7 +5,7 @@ import { NotificationCard } from "@/components/ui/notification-card";
 import {
   getUserNotifications,
   markNotificationAsRead,
-} from "@/services/api/notification.service";
+} from "@/services/modules/notification.service";
 import { Notification } from "@/types/notification";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";

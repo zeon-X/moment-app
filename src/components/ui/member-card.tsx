@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 import { Avatar } from "./avatar";
@@ -41,9 +41,9 @@ export function MemberCard({ member, onPress }: MemberCardProps) {
         </View>
 
         {/* Action Button */}
-        <TouchableOpacity className="bg-orange-500 px-4 py-2 rounded-lg">
+        {/* <TouchableOpacity className="bg-orange-500 px-4 py-2 rounded-lg">
           <Text className="text-white  text-sm font-semibold">View</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ThemedView>
     </TouchableOpacity>
   );

@@ -4,9 +4,12 @@ import { Avatar } from "@/components/ui/avatar";
 import LoadingText from "@/components/ui/loading-text";
 import { PostCard } from "@/components/ui/post-card";
 import { StatCard } from "@/components/ui/stat-card";
-import { logoutUser } from "@/services/api/auth.service";
-import { commentOnPost, toggleLikeOnPost } from "@/services/api/post.service";
-import { getUserDetails } from "@/services/api/user.service";
+import { logoutUser } from "@/services/modules/auth.service";
+import {
+  commentOnPost,
+  toggleLikeOnPost,
+} from "@/services/modules/post.service";
+import { getUserDetails } from "@/services/modules/user.service";
 import React, { useEffect, useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/auth-context";

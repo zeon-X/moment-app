@@ -8,7 +8,7 @@ import {
   commentOnPost,
   getFeed,
   toggleLikeOnPost,
-} from "@/services/api/post.service";
+} from "@/services/modules/post.service";
 import React, { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, TextInput } from "react-native";
 

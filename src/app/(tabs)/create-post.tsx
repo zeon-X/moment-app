@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/themed-text";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
-import { createPost } from "@/services/api/post.service";
+import { createPost } from "@/services/modules/post.service";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";

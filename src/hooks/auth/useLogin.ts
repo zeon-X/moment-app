@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/auth-context";
-import { loginUser } from "@/services/api/auth.service";
+import { loginUser } from "@/services/modules/auth.service";
 import { LoginFormData, LoginFormErrors } from "@/types/auth";
 import { saveToSecureStore } from "@/utils/useSecureStorage";
 import { validateLoginForm } from "@/utils/validation/auth-validation";
