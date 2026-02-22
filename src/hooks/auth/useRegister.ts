@@ -99,7 +99,7 @@ export const useRegister = () => {
             }));
         }
 
-        console.log(data);
+
 
     };
 

@@ -32,8 +32,8 @@ export function validateLoginForm(formData: LoginFormData): LoginFormErrors {
     const newErrors: LoginFormErrors = {};
 
     if (!formData.identifier.trim()) newErrors.identifier = "Email or Username is required.";
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.identifier.trim()))
-        newErrors.identifier = "Invalid email address.";
+    // else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.identifier.trim()))
+    //     newErrors.identifier = "Invalid email address.";
 
     if (!formData.password.trim()) newErrors.password = "Password is required.";
 

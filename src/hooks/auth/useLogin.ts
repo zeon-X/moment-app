@@ -1,6 +1,7 @@
 import { loginUser } from "@/services/api/auth.service";
 import { LoginFormData, LoginFormErrors } from "@/types/auth";
 import { validateLoginForm } from "@/utils/validation/auth-validation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Keyboard } from "react-native";
@@ -34,6 +35,21 @@ export const useLogin = () => {
         setIsLoggingIn(true);
         const data = await loginUser(formData)
         setIsLoggingIn(false);
+
+        if (data.success) {
+            // console.log(data?.data);
+
+            await AsyncStorage.setItem("token", data?.token);
+            await AsyncStorage.setItem("user", JSON.stringify(data?.data));
+
+        }
+        else {
+            setErrors((prev) => ({
+                ...prev,
+                message: data.message,
+            }));
+        }
+
     };
 
 

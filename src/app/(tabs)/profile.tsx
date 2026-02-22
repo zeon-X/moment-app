@@ -3,6 +3,7 @@ import { ThemedText } from "@/components/themed-text";
 import { Avatar } from "@/components/ui/avatar";
 import { PostCard } from "@/components/ui/post-card";
 import { StatCard } from "@/components/ui/stat-card";
+import { logoutUser } from "@/services/api/auth.service";
 import React, { useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 import type { Comment, UserProfile } from "../../types/user";
@@ -68,6 +69,7 @@ const ProfileTabScreen = () => {
           text: "Logout",
           onPress: async () => {
             setIsLoggingOut(true);
+            await logoutUser();
             // Simulate logout
             setTimeout(() => {
               setIsLoggingOut(false);

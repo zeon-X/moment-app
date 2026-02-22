@@ -15,7 +15,8 @@ import { FormTextInput } from "../../components/ui/form-text-input";
 import { useLogin } from "@/hooks/auth/useLogin";
 
 const Login = () => {
-  const { router, formData, errors, handleChange, handleLogin } = useLogin();
+  const { router, formData, errors, handleChange, isLoggingIn, handleLogin } =
+    useLogin();
 
   return (
     <KeyboardAvoidingView
@@ -57,6 +58,8 @@ const Login = () => {
             variant="primary"
             className="mt-2 rounded-md py-3"
             onPress={handleLogin}
+            isLoading={isLoggingIn}
+            loadingText="Logging in..."
           />
 
           {errors.message && (

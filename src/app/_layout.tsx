@@ -10,15 +10,20 @@ import "react-native-reanimated";
 import "./global.css";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-export const unstable_settings = {
-  anchor: "(tabs)",
-};
-
-export default function RootLayout() {
+const RootLayout = () => {
   const colorScheme = useColorScheme();
-  const isAuthenticated = false;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    AsyncStorage.getItem("token").then((token) => {
+      setIsAuthenticated(!!token);
+      console.log(token);
+    });
+  }, []);
 
   return (
     <SafeAreaProvider>
@@ -43,4 +48,6 @@ export default function RootLayout() {
       </ThemeProvider>
     </SafeAreaProvider>
   );
-}
+};
+
+export default RootLayout;
