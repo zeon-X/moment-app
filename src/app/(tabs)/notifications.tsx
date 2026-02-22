@@ -1,9 +1,7 @@
 import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
-import {
-  NotificationCard,
-  type Notification,
-} from "@/components/ui/notification-card";
+import { NotificationCard } from "@/components/ui/notification-card";
+import { Notification } from "@/types/notification";
 import React, { useState } from "react";
 import { View } from "react-native";
 

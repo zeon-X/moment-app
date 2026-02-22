@@ -1,8 +1,6 @@
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import {
   Image,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
@@ -13,44 +11,10 @@ import { ThemedView } from "../../components/themed-view";
 import { Button } from "../../components/ui/button";
 import { FormTextInput } from "../../components/ui/form-text-input";
 
-type LoginFormData = {
-  email: string;
-  password: string;
-};
-
-type LoginFormErrors = Partial<Record<keyof LoginFormData, string>>;
+import { useLogin } from "@/hooks/auth/useLogin";
 
 const Login = () => {
-  const router = useRouter();
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<LoginFormErrors>({});
-
-  const handleChange = (field: keyof LoginFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
-
-  const loginFormValidate = () => {
-    const newErrors: LoginFormErrors = {};
-
-    if (!formData.email.trim()) newErrors.email = "Email is required.";
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email.trim()))
-      newErrors.email = "Invalid email address.";
-
-    if (!formData.password.trim()) newErrors.password = "Password is required.";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleLogin = () => {
-    Keyboard.dismiss();
-    if (!loginFormValidate()) return;
-    // Login logic here
-  };
+  const { router, formData, errors, handleChange, handleLogin } = useLogin();
 
   return (
     <KeyboardAvoidingView
@@ -95,11 +59,12 @@ const Login = () => {
           />
 
           <View className="flex-row justify-center items-center gap-1 mt-1">
-            <ThemedText className="text-[12px]">
-              Don’t have an account?
-            </ThemedText>
+            <ThemedText type="small">Don’t have an account?</ThemedText>
             <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
-              <ThemedText className="text-[12px] font-semibold text-orange-600">
+              <ThemedText
+                type="small"
+                className="font-semibold text-orange-600"
+              >
                 Register
               </ThemedText>
             </TouchableOpacity>

@@ -1,5 +1,6 @@
 import { ScreenLayout } from "@/components/screen-layout";
-import { MemberCard, type CommunityMember } from "@/components/ui/member-card";
+import { MemberCard } from "@/components/ui/member-card";
+import type { CommunityMember } from "../../types/community";
 
 const COMMUNITY_MEMBERS: CommunityMember[] = [
   {

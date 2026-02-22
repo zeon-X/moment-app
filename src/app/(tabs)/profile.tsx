@@ -1,24 +1,11 @@
 import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
 import { Avatar } from "@/components/ui/avatar";
-import { type Comment } from "@/components/ui/comments-list";
-import { PostCard, type Post } from "@/components/ui/post-card";
+import { PostCard } from "@/components/ui/post-card";
 import { StatCard } from "@/components/ui/stat-card";
 import React, { useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
-
-type UserProfile = {
-  name: string;
-  age: number;
-  email: string;
-  username: string;
-  stats: {
-    posts: number;
-    comments: number;
-    likes: number;
-  };
-  posts: Post[];
-};
+import type { Comment, UserProfile } from "../../types/user";
 
 const SAMPLE_USER: UserProfile = {
   name: "John Developer",

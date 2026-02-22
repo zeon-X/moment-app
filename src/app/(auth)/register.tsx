@@ -1,8 +1,6 @@
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import {
   Image,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
@@ -13,60 +11,19 @@ import { ThemedView } from "../../components/themed-view";
 import { Button } from "../../components/ui/button";
 import { FormTextInput } from "../../components/ui/form-text-input";
 
-type FormData = {
-  name: string;
-  age: string;
-  email: string;
-  username: string;
-  password: string;
-};
-
-type FormErrors = Partial<Record<keyof FormData, string>>;
+import { useRegister } from "@/hooks/auth/useRegister";
 
 const Register = () => {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
-    email: "",
-    username: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<FormErrors>({});
+  const {
+    router,
+    formData,
+    isUsernameAvailable,
+    isUsernameChecking,
+    errors,
+    handleChange,
 
-  const handleChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
-
-  const registerFormValidate = () => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.name.trim()) newErrors.name = "Name is required.";
-
-    if (!formData.age.trim()) newErrors.age = "Age is required.";
-    else if (!/^\d+$/.test(formData.age.trim()))
-      newErrors.age = "Age must be a number.";
-    else if (Number(formData.age.trim()) <= 0)
-      newErrors.age = "Age must be greater than 0.";
-
-    if (!formData.email.trim()) newErrors.email = "Email is required.";
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email.trim()))
-      newErrors.email = "Invalid email address.";
-
-    if (!formData.username.trim()) newErrors.username = "Username is required.";
-
-    if (!formData.password.trim()) newErrors.password = "Password is required.";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleRegister = () => {
-    Keyboard.dismiss();
-    if (!registerFormValidate()) return;
-    // Registration logic here
-  };
+    handleRegister,
+  } = useRegister();
 
   return (
     <KeyboardAvoidingView
@@ -83,6 +40,20 @@ const Register = () => {
           Create Account
         </ThemedText>
         <View className="w-full max-w-md gap-4">
+          <FormTextInput
+            label="Choose Username"
+            placeholder="Username"
+            value={formData.username}
+            onChangeText={(v) => handleChange("username", v)}
+            autoCapitalize="none"
+            error={errors.username}
+            success={
+              !isUsernameChecking && isUsernameAvailable
+                ? "This username is available!"
+                : undefined
+            }
+          />
+
           <FormTextInput
             label="Name"
             placeholder="Name"
@@ -109,14 +80,6 @@ const Register = () => {
             error={errors.email}
           />
           <FormTextInput
-            label="Username"
-            placeholder="Username"
-            value={formData.username}
-            onChangeText={(v) => handleChange("username", v)}
-            autoCapitalize="none"
-            error={errors.username}
-          />
-          <FormTextInput
             label="Password"
             placeholder="Password"
             value={formData.password}
@@ -124,19 +87,20 @@ const Register = () => {
             secureTextEntry
             error={errors.password}
           />
-
           <Button
             title="Register"
             variant="primary"
             className="mt-2 rounded-md py-3"
             onPress={handleRegister}
           />
+
           <View className="flex-row justify-center items-center gap-1 mt-1">
-            <ThemedText className="text-[12px]">
-              Already have an account?
-            </ThemedText>
+            <ThemedText type="small">Already have an account?</ThemedText>
             <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
-              <ThemedText className="text-[12px] font-semibold text-orange-600">
+              <ThemedText
+                type="small"
+                className="font-semibold text-orange-600"
+              >
                 Go Login
               </ThemedText>
             </TouchableOpacity>

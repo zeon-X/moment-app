@@ -1,22 +1,11 @@
 import moment from "moment";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
+import type { Notification } from "../../types/notification";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 import { Avatar } from "./avatar";
 import { IconSymbol } from "./icon-symbol";
-
-export type Notification = {
-  id: string;
-  type: "like" | "comment";
-  user: {
-    name: string;
-    username: string;
-  };
-  postPreview: string;
-  timestamp: Date;
-  read: boolean;
-};
 
 type NotificationCardProps = {
   notification: Notification;

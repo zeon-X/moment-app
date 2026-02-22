@@ -18,7 +18,7 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   return (
     <SafeAreaProvider>
