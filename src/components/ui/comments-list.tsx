@@ -38,7 +38,7 @@ export function CommentsList({ comments, onAddComment }: CommentsListProps) {
       onAddComment(comment);
       setNewComment("");
       setIsSubmitting(false);
-    }, 1000);
+    }, 750);
   };
 
   return (
@@ -81,7 +81,7 @@ export function CommentsList({ comments, onAddComment }: CommentsListProps) {
 
       {/* Comment Input */}
       <View className="flex-row gap-2 items-end">
-        <Avatar name="You" size="sm" />
+        <Avatar name={userInfo?.name || "A"} size="sm" />
         <View className="flex-1 flex-row gap-2">
           <TextInput
             placeholder="Write a comment..."

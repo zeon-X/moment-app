@@ -42,7 +42,7 @@ export function MemberCard({ member, onPress }: MemberCardProps) {
 
         {/* Action Button */}
         <TouchableOpacity className="bg-orange-500 px-4 py-2 rounded-lg">
-          <Text className="text-white  text-sm font-semibold">Follow</Text>
+          <Text className="text-white  text-sm font-semibold">View</Text>
         </TouchableOpacity>
       </ThemedView>
     </TouchableOpacity>

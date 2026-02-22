@@ -5,6 +5,7 @@ import LoadingText from "@/components/ui/loading-text";
 import { PostCard } from "@/components/ui/post-card";
 import { StatCard } from "@/components/ui/stat-card";
 import { logoutUser } from "@/services/api/auth.service";
+import { commentOnPost, toggleLikeOnPost } from "@/services/api/post.service";
 import { getUserDetails } from "@/services/api/user.service";
 import React, { useEffect, useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
@@ -74,7 +75,9 @@ const ProfileTabScreen = () => {
     );
   };
 
-  const handleLike = (postId: string) => {
+  const handleLike = async (postId: string) => {
+    await toggleLikeOnPost(postId);
+
     setUser((prev) => ({
       ...prev,
       stats: {
@@ -95,11 +98,8 @@ const ProfileTabScreen = () => {
     }));
   };
 
-  const handleToggleComments = (postId: string) => {
-    setExpandedPostId(expandedPostId === postId ? null : postId);
-  };
-
-  const handleAddComment = (postId: string, comment: Comment) => {
+  const handleAddComment = async (postId: string, comment: Comment) => {
+    await commentOnPost(postId, { content: comment.content.trim() });
     setUser((prev) => ({
       ...prev,
       stats: {
@@ -112,6 +112,10 @@ const ProfileTabScreen = () => {
           : post,
       ),
     }));
+  };
+
+  const handleToggleComments = (postId: string) => {
+    setExpandedPostId(expandedPostId === postId ? null : postId);
   };
 
   return (
