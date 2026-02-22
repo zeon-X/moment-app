@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/auth-context";
 import { loginUser } from "@/services/api/auth.service";
 import { LoginFormData, LoginFormErrors } from "@/types/auth";
 import { saveToSecureStore } from "@/utils/useSecureStorage";
@@ -7,7 +8,7 @@ import { useState } from "react";
 import { Keyboard } from "react-native";
 
 export const useLogin = () => {
-
+    const { setSession, setUserInfo } = useAuth();
 
     const router = useRouter();
     const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -43,6 +44,10 @@ export const useLogin = () => {
 
             saveToSecureStore("token", data?.token);
             saveToSecureStore("user", JSON.stringify(data?.data));
+
+
+            setSession(data?.token);
+            setUserInfo(data?.data);
 
         }
         else {

@@ -2,135 +2,47 @@ import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { type Comment } from "@/components/ui/comments-list";
+import LoadingText from "@/components/ui/loading-text";
 import { PostCard, type Post } from "@/components/ui/post-card";
-import React, { useState } from "react";
-import { TextInput } from "react-native";
+import {
+  commentOnPost,
+  getFeed,
+  toggleLikeOnPost,
+} from "@/services/api/post.service";
+import React, { useEffect, useState } from "react";
+import { KeyboardAvoidingView, Platform, TextInput } from "react-native";
 
-const SAMPLE_POSTS: Post[] = [
-  {
-    id: "1",
-    author: "Sarah Johnson",
-    username: "sarah_j",
-    content:
-      "Just finished an amazing hike! The views were absolutely stunning. Nothing beats getting out in nature on a beautiful day. 🏔️✨",
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-    likes: 234,
-    comments: [
-      {
-        id: "c1",
-        author: "Alex Chen",
-        username: "alex_chen",
-        content: "That looks amazing! Which trail was this?",
-        createdAt: new Date(Date.now() - 1.5 * 60 * 60 * 1000),
-      },
-      {
-        id: "c2",
-        author: "Emma Williams",
-        username: "emma_w",
-        content: "Love the photography! 📸",
-        createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
-      },
-    ],
-    liked: false,
-  },
-  {
-    id: "2",
-    author: "Alex Chen",
-    username: "alex_chen",
-    content:
-      "Launched my new project today! So excited to share what I've been working on for the past few months. Check it out and let me know what you think!",
-    createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
-    likes: 567,
-    comments: [
-      {
-        id: "c3",
-        author: "Jessica Lee",
-        username: "jess_lee",
-        content: "Congratulations! This is awesome 🎉",
-        createdAt: new Date(Date.now() - 3.5 * 60 * 60 * 1000),
-      },
-    ],
-    liked: true,
-  },
-  {
-    id: "3",
-    author: "Emma Williams",
-    username: "emma_w",
-    content:
-      "Coffee tastes better when you're surrounded by good friends. Grateful for these moments. ☕❤️",
-    createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
-    likes: 189,
-    comments: [],
-    liked: false,
-  },
-  {
-    id: "4",
-    author: "Michael Brown",
-    username: "m_brown",
-    content:
-      "Weekend plans: catch up on reading that book everyone's been recommending. Any suggestions for what I should read next?",
-    createdAt: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
-    likes: 98,
-    comments: [
-      {
-        id: "c4",
-        author: "David Patel",
-        username: "david_p",
-        content: "You should read 'Atomic Habits' - game changer!",
-        createdAt: new Date(Date.now() - 7 * 60 * 60 * 1000),
-      },
-    ],
-    liked: false,
-  },
-  {
-    id: "5",
-    author: "Jessica Lee",
-    username: "jess_lee",
-    content:
-      "Trying a new recipe today - homemade pasta from scratch! Wish me luck 🍝 Who else loves cooking?",
-    createdAt: new Date(Date.now() - 10 * 60 * 60 * 1000), // 10 hours ago
-    likes: 445,
-    comments: [
-      {
-        id: "c5",
-        author: "Sarah Johnson",
-        username: "sarah_j",
-        content: "Please share the recipe! Looks delicious",
-        createdAt: new Date(Date.now() - 9 * 60 * 60 * 1000),
-      },
-    ],
-    liked: false,
-  },
-  {
-    id: "6",
-    author: "David Patel",
-    username: "david_p",
-    content:
-      "Sometimes the best ideas come when you're not looking for them. Just had one of those moments! excited to work on this",
-    createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 hours ago
-    likes: 267,
-    comments: [],
-    liked: false,
-  },
-];
-
-export default function HomeScreen() {
+export default function HomeTabScreen() {
   const [filterText, setFilterText] = useState("");
-  const [posts, setPosts] = useState<Post[]>(SAMPLE_POSTS);
+  const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
+  useEffect(() => {
+    handleRefresh();
+  }, []);
+
   const handleRefresh = async () => {
+    setIsLoading(true);
     // TODO: Fetch fresh posts from API
+    await getFeed().then((data) => {
+      if (data.success) {
+        setPosts(data.data);
+      }
+    });
+    setIsLoading(false);
   };
 
-  const filteredPosts = posts.filter((post) =>
+  const filteredPosts = posts?.filter((post) =>
     filterText.trim() === ""
       ? true
       : post.username.toLowerCase().includes(filterText.toLowerCase()) ||
         post.author.toLowerCase().includes(filterText.toLowerCase()),
   );
 
-  const handleLike = (postId: string) => {
+  const handleLike = async (postId: string) => {
+    await toggleLikeOnPost(postId);
+
     setPosts(
       posts.map((post) => {
         if (post.id === postId) {
@@ -145,13 +57,18 @@ export default function HomeScreen() {
     );
   };
 
-  const handleAddComment = (postId: string, comment: Comment) => {
+  const handleAddComment = async (postId: string, comment: Comment) => {
+    await commentOnPost(postId, { content: comment.content.trim() });
+
     setPosts(
       posts.map((post) => {
         if (post.id === postId) {
           return {
             ...post,
-            comments: [...post.comments, comment],
+            comments: [
+              ...post.comments,
+              { ...comment, content: comment.content.trim() },
+            ],
           };
         }
         return post;
@@ -170,43 +87,53 @@ export default function HomeScreen() {
       contentClassName="px-4 py-4"
       onRefresh={handleRefresh}
     >
-      {/* Filter Input */}
-      <TextInput
-        placeholder="Filter by username or name..."
-        placeholderTextColor="#999"
-        value={filterText}
-        onChangeText={setFilterText}
-        className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-4 py-3 rounded-lg mb-6 border border-gray-200 dark:border-gray-700"
-      />
-
-      {/* Posts List */}
-      {filteredPosts.length > 0 ? (
-        filteredPosts.map((post) => (
-          <PostCard
-            key={post.id}
-            post={post}
-            isExpanded={expandedPostId === post.id}
-            onLike={handleLike}
-            onToggleComments={handleToggleComments}
-            onAddComment={handleAddComment}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{ flex: 1 }}
+      >
+        <>
+          {/* Filter Input */}
+          <TextInput
+            placeholder="Filter by username or name..."
+            placeholderTextColor="#999"
+            value={filterText}
+            onChangeText={setFilterText}
+            className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-4 py-3 rounded-lg mb-6 border border-gray-200 dark:border-gray-700"
           />
-        ))
-      ) : (
-        <ThemedView className="flex-1 items-center justify-center py-12">
-          <ThemedText className="text-gray-500 text-center">
-            {`No posts found for "${filterText}"`}
-          </ThemedText>
-        </ThemedView>
-      )}
 
-      {/* Empty State */}
-      {filteredPosts.length === 0 && !filterText && (
-        <ThemedView className="flex-1 items-center justify-center py-12">
-          <ThemedText className="text-gray-500 text-center">
-            No posts yet. Follow users to see their posts!
-          </ThemedText>
-        </ThemedView>
-      )}
+          {/* Posts List */}
+          {isLoading ? (
+            <LoadingText message="Loading feed..." />
+          ) : filteredPosts?.length > 0 ? (
+            filteredPosts?.map((post) => (
+              <PostCard
+                key={post?.id}
+                post={post}
+                isExpanded={expandedPostId === post?.id}
+                onLike={handleLike}
+                onToggleComments={handleToggleComments}
+                onAddComment={handleAddComment}
+              />
+            ))
+          ) : (
+            <ThemedView className="flex-1 items-center justify-center py-12">
+              <ThemedText className="text-gray-500 text-center">
+                {filterText.trim() !== "" &&
+                  `No posts found for "${filterText}"`}
+              </ThemedText>
+            </ThemedView>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && filteredPosts?.length === 0 && !filterText && (
+            <ThemedView className="flex-1 items-center justify-center py-12">
+              <ThemedText className="text-gray-500 text-center">
+                No posts yet. Pull down to refresh or check back later!
+              </ThemedText>
+            </ThemedView>
+          )}
+        </>
+      </KeyboardAvoidingView>
     </ScreenLayout>
   );
 }

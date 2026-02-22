@@ -12,6 +12,13 @@ export type UserProfile = {
     posts: Post[];
 };
 
+export type UserInfo = {
+    name: string;
+    age: number;
+    email: string;
+    username: string;
+};
+
 // Post types
 export type Post = {
     id: string;

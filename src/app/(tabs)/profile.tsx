@@ -1,58 +1,65 @@
 import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
 import { Avatar } from "@/components/ui/avatar";
+import LoadingText from "@/components/ui/loading-text";
 import { PostCard } from "@/components/ui/post-card";
 import { StatCard } from "@/components/ui/stat-card";
 import { logoutUser } from "@/services/api/auth.service";
-import React, { useState } from "react";
+import { getUserDetails } from "@/services/api/user.service";
+import React, { useEffect, useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { useAuth } from "../../context/auth-context";
 import type { Comment, UserProfile } from "../../types/user";
 
 const SAMPLE_USER: UserProfile = {
-  name: "John Developer",
-  age: 27,
-  email: "john.dev@example.com",
-  username: "john_dev",
-  stats: { posts: 48, comments: 156, likes: 892 },
+  name: "",
+  age: 0,
+  email: "",
+  username: "",
+  stats: { posts: 0, comments: 0, likes: 0 },
   posts: [
-    {
-      id: "p1",
-      author: "John Developer",
-      username: "john_dev",
-      content: "Just built an amazing feature using React Native! 🚀",
-      createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
-      likes: 45,
-      comments: [
-        {
-          id: "c1",
-          author: "Sarah Johnson",
-          username: "sarah_j",
-          content: "That looks awesome!",
-          createdAt: new Date(Date.now() - 30 * 60 * 1000),
-        },
-      ],
-      liked: true,
-    },
-    {
-      id: "p2",
-      author: "John Developer",
-      username: "john_dev",
-      content: "Coffee and coding - my favorite combination ☕💻",
-      createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
-      likes: 32,
-      comments: [],
-      liked: false,
-    },
+    // {
+    //   id: "p1",
+    //   author: "John Developer",
+    //   username: "john_dev",
+    //   content: "Just built an amazing feature using React Native! 🚀",
+    //   createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
+    //   likes: 45,
+    //   comments: [
+    //     {
+    //       id: "c1",
+    //       author: "Sarah Johnson",
+    //       username: "sarah_j",
+    //       content: "That looks awesome!",
+    //       createdAt: new Date(Date.now() - 30 * 60 * 1000),
+    //     },
+    //   ],
+    //   liked: true,
+    // },
   ],
 };
 
 const ProfileTabScreen = () => {
+  const { clearSession, userInfo } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<UserProfile>(SAMPLE_USER);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
+  useEffect(() => {
+    handleRefresh();
+  }, []);
+
   const handleRefresh = async () => {
+    setIsLoading(true);
     // TODO: Fetch user data from API
+
+    await getUserDetails(userInfo?.username || "").then((data) => {
+      if (data.success) {
+        setUser(data.data);
+      }
+    });
+    setIsLoading(false);
   };
 
   const handleLogout = () => {
@@ -70,6 +77,8 @@ const ProfileTabScreen = () => {
           onPress: async () => {
             setIsLoggingOut(true);
             await logoutUser();
+
+            clearSession();
             // Simulate logout
             setTimeout(() => {
               setIsLoggingOut(false);
@@ -90,8 +99,8 @@ const ProfileTabScreen = () => {
       stats: {
         ...prev.stats,
         likes:
-          prev.stats.likes +
-          (user.posts.find((p) => p.id === postId)?.liked ? -1 : 1),
+          prev.stats?.likes +
+          (user?.posts.find((p) => p.id === postId)?.liked ? -1 : 1),
       },
       posts: prev.posts.map((post) =>
         post.id === postId
@@ -114,7 +123,7 @@ const ProfileTabScreen = () => {
       ...prev,
       stats: {
         ...prev.stats,
-        comments: prev.stats.comments + 1,
+        comments: prev.stats?.comments + 1,
       },
       posts: prev.posts.map((post) =>
         post.id === postId
@@ -142,52 +151,61 @@ const ProfileTabScreen = () => {
       scrollViewClassName="flex-1"
       onRefresh={handleRefresh}
     >
-      {/* Avatar */}
-      <View className="items-center mb-4">
-        <Avatar name={user.name} size="lg" />
-      </View>
+      {isLoading ? (
+        <LoadingText message="Loading profile..." />
+      ) : (
+        <>
+          {/* Avatar */}
+          <View className="items-center mb-4">
+            <Avatar name={user?.name} size="lg" />
+          </View>
 
-      {/* Info */}
-      <View className="items-center mb-4">
-        {/* Name */}
-        <ThemedText type="defaultSemiBold" className="text-xl mb-1">
-          {user.name}
-        </ThemedText>
-        {/* Username & Email */}
-        <ThemedText type="small" className="text-gray-500">
-          @{user.username} {user.email && "|"} {user.email}
-        </ThemedText>
-      </View>
+          {/* Info */}
+          <View className="items-center mb-4">
+            {/* Name */}
+            <ThemedText type="defaultSemiBold" className="text-xl mb-1">
+              {user?.name}
+            </ThemedText>
+            {/* Username & Email */}
+            <ThemedText type="small" className="text-gray-500">
+              @{user?.username} {user?.email && "|"} {user?.email}
+            </ThemedText>
+          </View>
 
-      {/* Stats Section */}
-      <View className="flex-row gap-3 mb-8">
-        <StatCard value={user.stats.posts} label="Posts" />
-        <StatCard value={user.stats.comments} label="Comments" />
-        <StatCard value={user.stats.likes} label="Likes" />
-      </View>
+          {/* Stats Section */}
+          <View className="flex-row gap-3 mb-8">
+            <StatCard value={user?.stats?.posts} label="Posts" />
+            <StatCard value={user?.stats?.comments} label="Comments" />
+            <StatCard value={user?.stats?.likes} label="Likes" />
+          </View>
 
-      {/* My Posts Section */}
-      <View className="mb-6">
-        <ThemedText type="defaultSemiBold" className="text-lg mb-4">
-          My Posts
-        </ThemedText>
-        {user.posts.length > 0 ? (
-          user.posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              isExpanded={expandedPostId === post.id}
-              onLike={handleLike}
-              onToggleComments={handleToggleComments}
-              onAddComment={handleAddComment}
-            />
-          ))
-        ) : (
-          <ThemedText type="small" className="text-gray-500 text-center py-4">
-            No posts yet
-          </ThemedText>
-        )}
-      </View>
+          {/* My Posts Section */}
+          <View className="mb-6">
+            <ThemedText type="defaultSemiBold" className="text-lg mb-4">
+              My Posts
+            </ThemedText>
+            {user?.posts?.length > 0 ? (
+              user?.posts?.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  isExpanded={expandedPostId === post.id}
+                  onLike={handleLike}
+                  onToggleComments={handleToggleComments}
+                  onAddComment={handleAddComment}
+                />
+              ))
+            ) : (
+              <ThemedText
+                type="small"
+                className="text-gray-500 text-center py-4"
+              >
+                No posts yet
+              </ThemedText>
+            )}
+          </View>
+        </>
+      )}
     </ScreenLayout>
   );
 };

@@ -2,22 +2,17 @@ import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/auth-context";
+import { createPost } from "@/services/api/post.service";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 
 const MAX_CHAR_COUNT = 280;
 
-type CurrentUser = {
-  name: string;
-  username: string;
-};
-
-const CURRENT_USER: CurrentUser = {
-  name: "John Developer",
-  username: "john_dev",
-};
-
 const CreatePostTabScreen = () => {
+  const { userInfo } = useAuth();
+  const router = useRouter();
   const [postText, setPostText] = useState("");
   const [isPosting, setIsPosting] = useState(false);
 
@@ -30,11 +25,21 @@ const CreatePostTabScreen = () => {
 
     setIsPosting(true);
     // Simulate API call
-    setTimeout(() => {
-      setPostText("");
-      setIsPosting(false);
-      // You can add a success toast or notification here
-    }, 1000);
+
+    await createPost({ content: postText }).then((data) => {
+      if (data.success) {
+        // Post created successfully
+        // You can add the new post to a global state or trigger a refresh of the feed
+
+        setPostText("");
+        setIsPosting(false);
+        router.push("/"); // Navigate to the desired screen after posting
+      } else {
+        setIsPosting(false);
+        // Handle error case
+        // You can show an error toast or alert here
+      }
+    });
   };
 
   const charCount = postText.length;
@@ -51,10 +56,10 @@ const CreatePostTabScreen = () => {
     >
       {/* User Info Section */}
       <View className="flex-row items-center gap-3 pb-6 ">
-        <Avatar name={CURRENT_USER.name} size="md" />
+        <Avatar name={userInfo?.name || ""} size="md" />
         <View className="flex-1">
-          <ThemedText type="defaultSemiBold">{CURRENT_USER.name}</ThemedText>
-          <ThemedText type="small">@{CURRENT_USER.username}</ThemedText>
+          <ThemedText type="defaultSemiBold">{userInfo?.name}</ThemedText>
+          <ThemedText type="small">@{userInfo?.username}</ThemedText>
         </View>
       </View>
 

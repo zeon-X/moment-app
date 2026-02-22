@@ -10,44 +10,36 @@ import "react-native-reanimated";
 import "./global.css";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { getFromSecureStore } from "@/utils/useSecureStorage";
-import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AuthProvider, useAuth } from "../context/auth-context";
 import { SplashScreenController } from "./splash";
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    getFromSecureStore("token").then((token) => {
-      setIsAuthenticated(!!token);
-    });
-  }, []);
-
   return (
-    <SafeAreaProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <StatusBar style="auto" />
-        <SplashScreenController isLoading={false} />
-        <RootNavigator />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <AuthProvider>
+      <SafeAreaProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <StatusBar style="auto" />
+          <AuthSplashController />
+          <RootNavigator />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </AuthProvider>
   );
 };
 
 export default RootLayout;
 
+const AuthSplashController = () => {
+  const { loading } = useAuth();
+  return <SplashScreenController isLoading={loading} />;
+};
+
 const RootNavigator = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    getFromSecureStore("token").then((token) => {
-      setIsAuthenticated(!!token);
-    });
-  }, []);
-
+  const { isAuthenticated } = useAuth();
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={isAuthenticated}>

@@ -17,7 +17,18 @@ export const signUpUser = async (body: any) => {
 }
 
 
+export const getMe = async () => {
+  return await apiRequest('/auth/me', 'GET')
+
+}
+
+
+
+
 export const logoutUser = async () => {
+
+
   deleteFromSecureStore("token")
   deleteFromSecureStore("user")
+
 }

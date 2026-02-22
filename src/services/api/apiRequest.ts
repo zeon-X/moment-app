@@ -13,7 +13,7 @@ export const apiRequest = async (
 ) => {
 
 
-  const token = getFromSecureStore("token");
+  const token = await getFromSecureStore("token");
 
 
   const response = await fetch(`${API_URL}${endpoint}`, {

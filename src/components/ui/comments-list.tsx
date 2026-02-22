@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/auth-context";
 import moment from "moment";
 import React, { useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
@@ -18,6 +19,7 @@ type CommentsListProps = {
 };
 
 export function CommentsList({ comments, onAddComment }: CommentsListProps) {
+  const { userInfo } = useAuth();
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -28,15 +30,15 @@ export function CommentsList({ comments, onAddComment }: CommentsListProps) {
     setTimeout(() => {
       const comment: Comment = {
         id: Date.now().toString(),
-        author: "You",
-        username: "you",
+        author: userInfo?.name || "You",
+        username: userInfo?.username || "you",
         content: newComment,
         createdAt: new Date(),
       };
       onAddComment(comment);
       setNewComment("");
       setIsSubmitting(false);
-    }, 300);
+    }, 1000);
   };
 
   return (
@@ -86,7 +88,7 @@ export function CommentsList({ comments, onAddComment }: CommentsListProps) {
             placeholderTextColor="#999"
             value={newComment}
             onChangeText={setNewComment}
-            multiline
+            multiline={false}
             maxLength={280}
             className="flex-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600"
           />
