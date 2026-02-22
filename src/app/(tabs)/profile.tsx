@@ -9,7 +9,8 @@ import {
   toggleLikeOnPost,
 } from "@/services/modules/post.service";
 import { getUserDetails } from "@/services/modules/user.service";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/auth-context";
 import type { Comment, UserProfile } from "../../types/user";
@@ -30,9 +31,11 @@ const ProfileTabScreen = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
-  useEffect(() => {
-    handleRefresh();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      handleRefresh();
+    }, []),
+  );
 
   const handleRefresh = async () => {
     setIsLoading(true);
@@ -137,7 +140,7 @@ const ProfileTabScreen = () => {
       scrollViewClassName="flex-1"
       onRefresh={handleRefresh}
     >
-      {isLoading ? (
+      {user === SAMPLE_USER && isLoading ? (
         <LoadingText message="Loading profile..." />
       ) : (
         <>

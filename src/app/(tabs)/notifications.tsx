@@ -7,16 +7,19 @@ import {
   markNotificationAsRead,
 } from "@/services/modules/notification.service";
 import { Notification } from "@/types/notification";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState } from "react";
 import { View } from "react-native";
 
 const NotificationTabScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  useEffect(() => {
-    handleRefresh();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      handleRefresh();
+    }, []),
+  );
 
   const handleRefresh = async () => {
     setIsLoading(true);
@@ -52,7 +55,7 @@ const NotificationTabScreen = () => {
       onRefresh={handleRefresh}
     >
       {/* Notifications List */}
-      {isLoading ? (
+      {notifications.length === 0 && isLoading ? (
         <LoadingText message="Loading notifications..." />
       ) : notifications.length > 0 ? (
         notifications.map((notification) => (

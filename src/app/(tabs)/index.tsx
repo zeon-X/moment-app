@@ -9,7 +9,8 @@ import {
   getFeed,
   toggleLikeOnPost,
 } from "@/services/modules/post.service";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState } from "react";
 import { KeyboardAvoidingView, Platform, TextInput } from "react-native";
 
 export default function HomeTabScreen() {
@@ -18,9 +19,11 @@ export default function HomeTabScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
-  useEffect(() => {
-    handleRefresh();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      handleRefresh();
+    }, []),
+  );
 
   const handleRefresh = async () => {
     setIsLoading(true);
@@ -102,7 +105,7 @@ export default function HomeTabScreen() {
           />
 
           {/* Posts List */}
-          {isLoading ? (
+          {posts.length === 0 && isLoading ? (
             <LoadingText message="Loading feed..." />
           ) : filteredPosts?.length > 0 ? (
             filteredPosts?.map((post) => (
