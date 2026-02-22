@@ -17,26 +17,7 @@ const SAMPLE_USER: UserProfile = {
   email: "",
   username: "",
   stats: { posts: 0, comments: 0, likes: 0 },
-  posts: [
-    // {
-    //   id: "p1",
-    //   author: "John Developer",
-    //   username: "john_dev",
-    //   content: "Just built an amazing feature using React Native! 🚀",
-    //   createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
-    //   likes: 45,
-    //   comments: [
-    //     {
-    //       id: "c1",
-    //       author: "Sarah Johnson",
-    //       username: "sarah_j",
-    //       content: "That looks awesome!",
-    //       createdAt: new Date(Date.now() - 30 * 60 * 1000),
-    //     },
-    //   ],
-    //   liked: true,
-    // },
-  ],
+  posts: [],
 };
 
 const ProfileTabScreen = () => {
