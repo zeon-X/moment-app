@@ -22,7 +22,6 @@
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan"
     },
-
     "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
@@ -52,6 +51,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ee4210df-c5c0-4acf-97f3-04fcd3da02ba"
+      }
+    },
+    "owner": "gozeonx"
   }
 }
