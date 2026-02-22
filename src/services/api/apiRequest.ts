@@ -29,9 +29,9 @@ export const apiRequest = async (
   const data = await response.json()
 
   console.log("data from ApiRequest:", JSON.stringify(response, null, 1));
-  console.log("response status", response.status === 500);
+  console.log("response status", response.status === 401);
 
-  if (response.status === 500) {
+  if (response.status === 401) {
     logoutUser();
   }
 
