@@ -1,6 +1,7 @@
 import { useAuth } from "@/context/auth-context";
-import { loginUser } from "@/services/modules/auth.service";
+import { loginUser, saveToken } from "@/services/modules/auth.service";
 import { LoginFormData, LoginFormErrors } from "@/types/auth";
+import { registerForPushNotificationsAsync } from "@/utils/notifications";
 import { saveToSecureStore } from "@/utils/useSecureStorage";
 import { validateLoginForm } from "@/utils/validation/auth-validation";
 import { useRouter } from "expo-router";
@@ -36,13 +37,20 @@ export const useLogin = () => {
         // Login logic here
         setIsLoggingIn(true);
         const data = await loginUser(formData)
-        setIsLoggingIn(false);
+
+
+
+
+
+        const token = await registerForPushNotificationsAsync()
 
         if (data.success) {
             saveToSecureStore("token", data?.token);
 
             setSession(data?.token);
             setUserInfo(data?.data);
+
+            await saveToken({ token });
         }
         else {
             setErrors((prev) => ({
@@ -50,6 +58,8 @@ export const useLogin = () => {
                 message: data.message,
             }));
         }
+
+        setIsLoggingIn(false);
     };
     return { router, formData, errors, handleChange, isLoggingIn, handleLogin }
 }
