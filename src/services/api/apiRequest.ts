@@ -1,5 +1,5 @@
 import config from '@/config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getFromSecureStore } from '@/utils/useSecureStorage';
 
 const API_URL = config.apiUrl
 
@@ -13,7 +13,8 @@ export const apiRequest = async (
 ) => {
 
 
-  const token = await AsyncStorage.getItem('token')
+  const token = getFromSecureStore("token");
+
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     method,

@@ -22,8 +22,8 @@
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan"
     },
-   
-     "web": {
+
+    "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
     },
@@ -39,6 +39,13 @@
           "dark": {
             "backgroundColor": "#151718"
           }
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
       ]
     ],

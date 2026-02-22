@@ -10,18 +10,19 @@ import "react-native-reanimated";
 import "./global.css";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getFromSecureStore } from "@/utils/useSecureStorage";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SplashScreenController } from "./splash";
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem("token").then((token) => {
+    getFromSecureStore("token").then((token) => {
       setIsAuthenticated(!!token);
-      console.log(token);
     });
   }, []);
 
@@ -29,25 +30,32 @@ const RootLayout = () => {
     <SafeAreaProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <StatusBar style="auto" />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Protected guard={isAuthenticated}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen
-              name="create-post-modal"
-              options={{
-                presentation: "modal",
-                animation: "slide_from_bottom",
-                headerShown: false,
-              }}
-            />
-          </Stack.Protected>
-          <Stack.Protected guard={!isAuthenticated}>
-            <Stack.Screen name="(auth)" />
-          </Stack.Protected>
-        </Stack>
+        <SplashScreenController isLoading={false} />
+        <RootNavigator />
       </ThemeProvider>
     </SafeAreaProvider>
   );
 };
 
 export default RootLayout;
+
+const RootNavigator = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    getFromSecureStore("token").then((token) => {
+      setIsAuthenticated(!!token);
+    });
+  }, []);
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={isAuthenticated}>
+        <Stack.Screen name="(tabs)" />
+      </Stack.Protected>
+      <Stack.Protected guard={!isAuthenticated}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
+    </Stack>
+  );
+};

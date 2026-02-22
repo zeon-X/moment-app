@@ -1,5 +1,5 @@
 // services/api/auth.service.ts
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { deleteFromSecureStore } from '@/utils/useSecureStorage'
 import { apiRequest } from './apiRequest'
 
 
@@ -18,5 +18,6 @@ export const signUpUser = async (body: any) => {
 
 
 export const logoutUser = async () => {
-  await AsyncStorage.multiRemove(['token', 'user'])
+  deleteFromSecureStore("token")
+  deleteFromSecureStore("user")
 }

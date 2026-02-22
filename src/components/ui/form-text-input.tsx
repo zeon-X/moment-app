@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 import { IconSymbol } from "./icon-symbol";
@@ -18,6 +19,9 @@ type FormTextInputProps = TextInputProps & {
   success?: string;
   className?: string;
   isLoading?: boolean;
+
+  lightColor?: string;
+  darkColor?: string;
 };
 
 export function FormTextInput({
@@ -25,11 +29,15 @@ export function FormTextInput({
   isLoading,
   error,
   success,
+  lightColor,
+  darkColor,
   className = "",
   ...props
 }: FormTextInputProps) {
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordField = props.secureTextEntry !== undefined;
+
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
 
   return (
     <ThemedView className="gap-1">
@@ -45,6 +53,7 @@ export function FormTextInput({
             isPasswordField ? !showPassword : props.secureTextEntry
           }
           className={`bg-gray-100 dark:bg-gray-800 rounded-md px-4 py-4 ${className}`.trim()}
+          style={{ color }}
         />
 
         {isLoading && (
