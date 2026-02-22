@@ -46,6 +46,7 @@ const Register = () => {
             value={formData.username}
             onChangeText={(v) => handleChange("username", v)}
             autoCapitalize="none"
+            isLoading={isUsernameChecking}
             error={errors.username}
             success={
               !isUsernameChecking && isUsernameAvailable
