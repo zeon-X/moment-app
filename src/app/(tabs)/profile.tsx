@@ -1,6 +1,7 @@
 import { ScreenLayout } from "@/components/screen-layout";
 import { ThemedText } from "@/components/themed-text";
 import { Avatar } from "@/components/ui/avatar";
+import { CrossConfirm } from "@/components/ui/cross-confirm";
 import LoadingText from "@/components/ui/loading-text";
 import { PostCard } from "@/components/ui/post-card";
 import { StatCard } from "@/components/ui/stat-card";
@@ -11,7 +12,7 @@ import {
 import { getUserDetails } from "@/services/modules/user.service";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/auth-context";
 import type { Comment, UserProfile } from "../../types/user";
 
@@ -49,34 +50,24 @@ const ProfileTabScreen = () => {
     setIsLoading(false);
   };
 
-  const handleLogout = () => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => {},
-          style: "cancel",
-        },
-        {
-          text: "Logout",
-          onPress: async () => {
-            setIsLoggingOut(true);
-            await clearSession();
-
-            // Simulate logout
-            setTimeout(() => {
-              setIsLoggingOut(false);
-              // In a real app, this would navigate to auth screen
-              console.log("Logged out");
-            }, 500);
-          },
-          style: "destructive",
-        },
-      ],
-      { cancelable: false },
-    );
+  const handleLogout = async () => {
+    const confirmed = await CrossConfirm({
+      title: "Logout",
+      message: "Are you sure you want to logout?",
+      confirmText: "Logout",
+      cancelText: "Cancel",
+      destructive: true,
+    });
+    if (confirmed) {
+      setIsLoggingOut(true);
+      await clearSession();
+      // Simulate logout
+      setTimeout(() => {
+        setIsLoggingOut(false);
+        // In a real app, this would navigate to auth screen
+        console.log("Logged out");
+      }, 500);
+    }
   };
 
   const handleLike = async (postId: string) => {

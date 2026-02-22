@@ -59,15 +59,22 @@ export function IconSymbol({
 }) {
   if (count > 0)
     return (
-      <View className="flex-row items-center">
+      <View className="relative">
         <MaterialIcons
           color={color}
           size={size}
           name={MAPPING[name]}
           style={style}
         />
-
-        <ThemedText className="">{count}</ThemedText>
+        {/* Notification badge */}
+        <View
+          className="absolute top-[-2px] right-[-4px] bg-red-500 rounded-full px-1 min-w-[16px] h-[16px] items-center justify-center"
+          style={{ zIndex: 1 }}
+        >
+          <ThemedText type="xs" className="text-white font-bold">
+            {count}
+          </ThemedText>
+        </View>
       </View>
     );
   else
