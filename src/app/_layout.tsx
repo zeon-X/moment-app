@@ -12,7 +12,7 @@ import "./global.css";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider, useAuth } from "../context/auth-context";
-import { SplashScreenController } from "./splash";
+import SplashScreenController from "./splash";
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();

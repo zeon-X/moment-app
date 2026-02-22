@@ -32,23 +32,17 @@ export const useLogin = () => {
     const handleLogin = async () => {
         Keyboard.dismiss();
         if (!loginFormValidate()) return;
+
         // Login logic here
         setIsLoggingIn(true);
         const data = await loginUser(formData)
         setIsLoggingIn(false);
 
         if (data.success) {
-
-
-
-
             saveToSecureStore("token", data?.token);
-            saveToSecureStore("user", JSON.stringify(data?.data));
-
 
             setSession(data?.token);
             setUserInfo(data?.data);
-
         }
         else {
             setErrors((prev) => ({
@@ -56,9 +50,6 @@ export const useLogin = () => {
                 message: data.message,
             }));
         }
-
     };
-
-
     return { router, formData, errors, handleChange, isLoggingIn, handleLogin }
 }

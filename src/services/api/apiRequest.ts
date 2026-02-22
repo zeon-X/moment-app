@@ -1,6 +1,6 @@
 import config from '@/config';
+import { globalLogout } from '@/utils/logout-handler';
 import { getFromSecureStore } from '@/utils/useSecureStorage';
-import { logoutUser } from '../modules/auth.service';
 
 const API_URL = config.apiUrl
 
@@ -28,11 +28,10 @@ export const apiRequest = async (
 
   const data = await response.json()
 
-  console.log("data from ApiRequest:", JSON.stringify(response, null, 1));
-  console.log("response status", response.status === 401);
+  // console.log("data from ApiRequest:", JSON.stringify(response, null, 1), data);
 
   if (response.status === 401) {
-    logoutUser();
+    if (globalLogout.handler) globalLogout.handler();
   }
 
   // if (!data.success) {

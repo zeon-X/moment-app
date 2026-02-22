@@ -4,7 +4,6 @@ import { Avatar } from "@/components/ui/avatar";
 import LoadingText from "@/components/ui/loading-text";
 import { PostCard } from "@/components/ui/post-card";
 import { StatCard } from "@/components/ui/stat-card";
-import { logoutUser } from "@/services/modules/auth.service";
 import {
   commentOnPost,
   toggleLikeOnPost,
@@ -61,9 +60,8 @@ const ProfileTabScreen = () => {
           text: "Logout",
           onPress: async () => {
             setIsLoggingOut(true);
-            await logoutUser();
+            await clearSession();
 
-            clearSession();
             // Simulate logout
             setTimeout(() => {
               setIsLoggingOut(false);

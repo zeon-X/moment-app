@@ -1,6 +1,10 @@
 import { getMe } from "@/services/modules/auth.service";
 import { UserInfo } from "@/types/user";
-import { getFromSecureStore } from "@/utils/useSecureStorage";
+import { globalLogout } from "@/utils/logout-handler";
+import {
+  deleteFromSecureStore,
+  getFromSecureStore,
+} from "@/utils/useSecureStorage";
 import React, {
   createContext,
   ReactNode,
@@ -32,15 +36,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     getFromSecureStore("token").then((storedToken) => {
       setToken(storedToken);
       setIsAuthenticated(!!storedToken);
-
       handleFetchUserInfo();
       setLoading(false);
     });
+    globalLogout.handler = clearSession;
+    return () => {
+      globalLogout.handler = null;
+    };
   }, []);
 
   useEffect(() => {
     setIsAuthenticated(!!token);
   }, [token]);
+
+  useEffect(() => {
+    globalLogout.handler = clearSession;
+    return () => {
+      globalLogout.handler = null;
+    };
+  }, []);
 
   const handleFetchUserInfo = async () => {
     setLoading(true);
@@ -51,6 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(data.data);
       }
     });
+    setInterval(() => {}, 1000); // Refresh user info every 5 minutes
     setLoading(false);
   };
 
@@ -76,6 +91,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // You may want to use expo-secure-store's deleteItemAsync here
     setToken(null);
     setIsAuthenticated(false);
+
+    await deleteFromSecureStore("token");
+
     // setLoading(false);
   };
 
