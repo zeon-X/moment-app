@@ -12,31 +12,37 @@ export const apiRequest = async (
   method: string = 'GET',
   body?: any
 ) => {
-
-
   const token = await getFromSecureStore("token");
 
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    })
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  })
+    const data = await response.json()
 
-  const data = await response.json()
+    if (response.status === 401) {
+      if (globalLogout.handler) globalLogout.handler();
+    }
 
-  // console.log("data from ApiRequest:", JSON.stringify(response, null, 1), data);
+    return data
+  } catch (error: any) {
+    // Handle network errors
+    if (error.message === 'Network request failed') {
+      throw new Error('Unable to connect to server. Please check your internet connection.');
+    }
 
-  if (response.status === 401) {
-    if (globalLogout.handler) globalLogout.handler();
+    // Handle JSON parse errors
+    if (error instanceof SyntaxError) {
+      throw new Error('Invalid response from server.');
+    }
+
+    // Re-throw other errors
+    throw error;
   }
-
-  // if (!data.success) {
-  //   throw new Error(data.message || 'Something went wrong')
-  // }
-
-  return data
 }

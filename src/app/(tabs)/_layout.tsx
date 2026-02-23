@@ -21,7 +21,7 @@ export default function TabLayout() {
 
   useEffect(() => {
     fetchNotificationCount();
-    const interval = setInterval(fetchNotificationCount, 15000);
+    const interval = setInterval(fetchNotificationCount, 5000);
     return () => clearInterval(interval);
   }, []);
 

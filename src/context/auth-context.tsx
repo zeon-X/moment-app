@@ -37,6 +37,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setToken(storedToken);
       setIsAuthenticated(!!storedToken);
       handleFetchUserInfo();
+
+      // maake a 5 sec delay to show the splash screen for a bit longer
+      // setTimeout(() => {}, 5000);
       setLoading(false);
     });
     globalLogout.handler = clearSession;

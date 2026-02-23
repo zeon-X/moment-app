@@ -35,7 +35,6 @@ const RootLayout = () => {
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
           <StatusBar style="auto" />
-          <AuthSplashController />
           <RootNavigator />
         </ThemeProvider>
       </SafeAreaProvider>
@@ -45,21 +44,21 @@ const RootLayout = () => {
 
 export default RootLayout;
 
-const AuthSplashController = () => {
-  const { loading } = useAuth();
-  return <SplashScreenController isLoading={loading} />;
-};
-
 const RootNavigator = () => {
-  const { isAuthenticated } = useAuth();
+  const { loading, isAuthenticated } = useAuth();
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={isAuthenticated}>
-        <Stack.Screen name="(tabs)" />
-      </Stack.Protected>
-      <Stack.Protected guard={!isAuthenticated}>
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-    </Stack>
+    <>
+      <SplashScreenController isLoading={loading} />
+      {!loading && (
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Protected guard={isAuthenticated}>
+            <Stack.Screen name="(tabs)" />
+          </Stack.Protected>
+          <Stack.Protected guard={!isAuthenticated}>
+            <Stack.Screen name="(auth)" />
+          </Stack.Protected>
+        </Stack>
+      )}
+    </>
   );
 };
