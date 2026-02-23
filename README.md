@@ -1,4 +1,8 @@
 # Moment App
+<!-- Logo Placeholder -->
+<p align="left">
+  <img src="./assets/images/text-logo.png" alt="Moment App Logo" width="240"/>
+</p>
 
 ## Overview
 
