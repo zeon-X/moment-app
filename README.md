@@ -1,50 +1,85 @@
-# Welcome to your Expo app 👋
+# Techzu App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview
 
-## Get started
+Techzu App is a modern, cross-platform community application built with React Native and Expo. It provides a seamless user experience for authentication, community engagement, post creation, notifications, and user profile management. The app leverages modular architecture, reusable components, and best practices for scalability and maintainability.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
+- **User Authentication**: Secure login, registration, and onboarding flows.
+- **Community Feed**: Browse, create, and interact with posts in a community-driven environment.
+- **Notifications**: Real-time notifications for user engagement and updates.
+- **Profile Management**: View and edit user profiles.
+- **Responsive UI**: Themed components and layouts for a consistent look and feel.
+- **Reusable Components**: Modular UI elements for rapid development.
+- **TypeScript Support**: Strong typing for improved reliability and developer experience.
+
+## Setup
+
+1. **Clone the repository**
+
+   ```sh
+   git clone <repo-url>
+   cd app
    ```
 
-2. Start the app
+2. **Install dependencies**
 
-   ```bash
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Configure environment**
+   - Ensure `google-services.json` and `GoogleService-Info.plist` are present for Firebase integration.
+   - Update any environment variables as needed.
+
+4. **Run the app**
+
+   ```sh
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+   - Use the Expo Go app or an emulator to preview the application.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Folder Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+├── assets/                # Images and static assets
+├── scripts/               # Utility scripts (e.g., project reset)
+├── src/
+│   ├── app/               # App entry, layouts, and screens
+│   │   ├── (auth)/        # Auth-related screens (login, register, onboarding)
+│   │   ├── (tabs)/        # Main tab screens (community, create post, notifications, profile)
+│   │   ├── _layout.tsx    # Root layout
+│   │   ├── global.css     # Global styles
+│   │   └── splash.tsx     # Splash screen
+│   ├── components/        # Reusable UI components
+│   │   └── ui/            # Atomic UI elements (buttons, cards, etc.)
+│   ├── config/            # App configuration
+│   ├── constants/         # Theme and constant values
+│   ├── context/           # React context providers (e.g., auth)
+│   ├── hooks/             # Custom React hooks
+│   ├── services/          # API and business logic services
+│   ├── types/             # TypeScript type definitions
+│   └── utils/             # Utility functions and validation
+├── app.config.js          # Expo app configuration
+├── tailwind.config.js     # Tailwind CSS configuration
+├── tsconfig.json          # TypeScript configuration
+└── ...                    # Other configuration and project files
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Future Improvements
 
-## Learn more
+- **Unit & Integration Tests**: Add comprehensive test coverage for components and services.
+- **CI/CD Integration**: Automate builds, tests, and deployments.
+- **Enhanced Error Handling**: Improve user feedback and error reporting.
+- **Offline Support**: Enable offline capabilities and data caching.
+- **Accessibility**: Ensure full accessibility compliance.
+- **Performance Optimization**: Further optimize for speed and resource usage.
+- **Feature Expansion**: Add more community features, such as messaging, reactions, and advanced moderation tools.
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For questions or contributions, please open an issue or submit a pull request.
