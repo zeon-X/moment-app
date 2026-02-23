@@ -11,12 +11,8 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [notificationCount, setNotificationCount] = useState(0);
 
-  // I want to use a function that will call a api every 30 seconds to check for new notifications and update the badge count on the notifications tab
-  // await getUnreadNotificationCount
-
   const fetchNotificationCount = async () => {
     const data = await getUnreadNotificationCount();
-    // console.log("data", data);
 
     if (data.success) {
       setNotificationCount(data.unreadCount);
@@ -25,7 +21,7 @@ export default function TabLayout() {
 
   useEffect(() => {
     fetchNotificationCount();
-    const interval = setInterval(fetchNotificationCount, 5000);
+    const interval = setInterval(fetchNotificationCount, 15000);
     return () => clearInterval(interval);
   }, []);
 
