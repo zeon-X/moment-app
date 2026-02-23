@@ -49,7 +49,7 @@ const RootNavigator = () => {
   return (
     <>
       <SplashScreenController isLoading={loading} />
-      {!loading && (
+      {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Protected guard={isAuthenticated}>
             <Stack.Screen name="(tabs)" />
@@ -58,7 +58,7 @@ const RootNavigator = () => {
             <Stack.Screen name="(auth)" />
           </Stack.Protected>
         </Stack>
-      )}
+      }
     </>
   );
 };
